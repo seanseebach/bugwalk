@@ -845,14 +845,25 @@
   // has to know it's talking to Firestore specifically
   window.__bugwalkLeaderboard = {
     fetchTop10: function(){
-      return getDocs(query(scoresCol, orderBy("score", "desc"), limit(20)))
+      // Rows known to be invalid submissions. The deployed Security Rules deny
+      // delete/update to every client, so these can only be hidden here, not
+      // removed -- see the PR description. "cumbot" is deliberately not listed.
+      var BLOCKED = {
+        "UuKlWYKT95wpKqizG5gU": 1, "KQVIsuSPvSoL8uVr7O6h": 1, "iPQufHs2IX1MWqgaSOCn": 1,
+        "CGkelzWoKM9VVSCp7Ap1": 1, "APH0V201PnrpLHOVhAYp": 1, "7ZCHg2SBO8HoBwJiI5gt": 1,
+        "SMgt2fUtoEsyjxOvhUwV": 1, "TzxtKvDbOvp5xryosi2R": 1, "p3gpRB3tpO2CZMNz2tBK": 1
+      };
+      // Fetch deeper than we display, so the board still fills to 20 rows after
+      // blocked rows are dropped from the top of the score-ordered query.
+      return getDocs(query(scoresCol, orderBy("score", "desc"), limit(50)))
         .then(function(snap){
           var out = [];
           snap.forEach(function(doc){
+            if (BLOCKED[doc.id]) return;
             var data = doc.data();
             out.push({ _id: doc.id, name: data.name, score: data.score });
           });
-          return out;
+          return out.slice(0, 20);
         });
     },
     submitScore: function(name, scoreVal){
