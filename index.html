@@ -220,6 +220,26 @@
     .death-art{ transition:none; }
   }
 
+  /* The Cave: DIVA UP's centered "girl lying smiling in the grass" art --
+     a real sized flex child (see the HTML, between overlay-top and
+     overlay-bottom) rather than a full-bleed background layer, so it's
+     always visible in the middle regardless of how tall the surrounding
+     card content is */
+  .cave-victory-art{
+    flex:0 0 auto;
+    width:132px;
+    aspect-ratio:60/94;
+    background-image:url("data:image/png;base64,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");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    image-rendering:pixelated;
+    image-rendering:-moz-crisp-edges;
+    image-rendering:crisp-edges;
+    margin:10px auto;
+  }
+  .cave-victory-art[hidden]{ display:none; }
+
   /* girl on the sidewalk art for the very first ready screen -- simple
      show/hide (no crossfade needed) since it only ever appears once,
      same lifecycle as .ready-logo/#readyScores below */
@@ -539,6 +559,10 @@
            same lifecycle as readyLogo/readyScores below -->
       <div class="ready-art" id="readyArt" aria-hidden="true"></div>
       <div class="level-banner night" id="nightBanner">Tomorrow steps!</div>
+      <!-- The Cave: a separate level-banner instance (same component
+           "Tomorrow steps!" uses) so its own show/hide timing never
+           collides with the day/night banner above -->
+      <div class="level-banner" id="caveBanner">You found the cave</div>
       <button class="pause-btn" id="pauseBtn" title="Pause" aria-label="Pause" hidden>&#10073;&#10073;</button>
       <div class="hud-stats" id="hudStats" role="status" aria-label="Steps and mood" hidden>STEPS <span id="hudSteps">0</span>&nbsp;&nbsp;&nbsp;<span class="hud-mood">MOOD <span id="hudMood">0</span></span>
       </div>
@@ -732,6 +756,12 @@
             <div class="watch-lug"></div>
           </div>
           </div>
+          <!-- The Cave: DIVA UP only -- the girl lying smiling in the grass,
+               placed here as its own flex child between overlay-top and
+               overlay-bottom so the split-layout's justify-content:space-between
+               centers it in whatever room is left, guaranteed clear of every
+               other element instead of hoping a background layer peeks through -->
+          <div class="cave-victory-art" id="caveVictoryArt" hidden aria-hidden="true"></div>
           <div class="overlay-bottom" id="overlayBottom">
           <p id="overlayText" hidden></p>
           <div class="pixel-watch inline" id="readyScores" role="status" aria-label="Best steps and mood">
@@ -932,6 +962,31 @@
   var GIRL_MIN_X = SIDE_L + GIRL_W/2 + 2;
   var GIRL_MAX_X = SIDE_R - GIRL_W/2 - 2;
   var MAX_BUGS_ON_SCREEN = 10;    // hard cap on simultaneous bugs -- density stops climbing past this
+
+  // ---------- The Cave: a scripted milestone sequence from 30k-40k steps,
+  // then a short free-roam meadow finale. See caveStage below for the full
+  // state machine. Every duration here is real seconds, not steps -- the
+  // transition beats (found/approach/cuts) pause steps entirely, same as
+  // the existing night-transition freeze, so they always take the same
+  // wall-clock time regardless of how fast steps are climbing. ----------
+  var CAVE_ENTER_STEPS = 30000;       // every on-screen bug dies, she finds the entrance
+  var CAVE_EXIT_STEPS = 40000;        // the maze bottoms out and the exit comes into view
+  var CAVE_BANNER_DURATION = 2.2;     // "You found the cave" chip hang time
+  var CAVE_FOUND_HOLD = 1.2;          // beat before the mountain starts growing in
+  var CAVE_APPROACH_DURATION = 2.6;   // quiet walk-up, no spawns, mountain grows close
+  var CAVE_CUT_DURATION = 0.85;       // black screen beat stepping through the entrance
+  var CAVE_EXIT_APPROACH_DURATION = 2.6; // quiet walk toward the exit light, webs taper off
+  var CAVE_EXIT_CUT_DURATION = 0.85;  // white screen beat stepping through the exit
+  var MEADOW_DURATION = 15;           // free-roam victory lap before the run ends
+  var CAVE_WEB_SPEED = 132;           // px/s -- every web strand shares this one fixed speed
+  var CAVE_WEB_STRIP_H = 34;          // vertical spacing between generated web strips
+  // the big widow no longer pops in and fades -- she's visible the entire
+  // "inside"/"exitApproach" stretch, chasing along behind the girl, and
+  // never has a hitbox of her own (see drawCaveSpider)
+  var SPIDERLING_PX = SCALE*0.6;         // little cave spiders draw at this px-per-cell (vs SCALE for a normal bug)
+  var SPIDERLING_W = 16*SPIDERLING_PX, SPIDERLING_H = 14*SPIDERLING_PX;
+  var SPIDERLING_SPEED = 165;            // a touch faster than a bee's dive
+  var SPIDERLING_MIN_INTERVAL = 1.6, SPIDERLING_MAX_INTERVAL = 2.8; // more frequent than the every-2-levels bee
 
   // recompute the grass/sidewalk split and her movement bounds after W changes --
   // the sidewalk (play lane) stays fixed at SIDEWALK_WIDTH and the grass on
@@ -1144,6 +1199,31 @@
   ];
   var MOTH_COLORS = { w:"#c9a876", B:"#e8d9b5", d:"#8a6b45", o:"#4a3320", b:"#6b4a2c", a:"#3a2c1c", e:"#14100c", K:"#14100c", G:"#ffffff" };
 
+  // The Cave: a one-time widow-spider reveal, same 15-col grid as the fly/
+  // moth/bee so it shares their drawSpriteRotated helper -- drawn face-down
+  // like every other bug, then flipped 180deg at draw time so she faces up
+  // the tunnel instead of down at the girl. Red eyes, and a red hourglass
+  // marking on the abdomen (rows 2-4, which sit at the TOP of this
+  // face-down grid) like a real black widow.
+  var SPIDER_BODY_WIDOW = [
+    "......aaa......",
+    ".....aAAAa.....",
+    "....aAwwwAa....",
+    "...aAAawaAAa...",
+    "..lAAawwwaAAl..",
+    ".l.AAaaaAA.l...",
+    "l..AAAaAAA..l..",
+    "l..bbbbbbb..l..",
+    "....eek.kee....",
+    ".l..bbbbb..l...",
+    "l....AAA....l..",
+    "..l.......l....",
+    ".l.........l...",
+    "l...........l.."
+  ];
+  var SPIDER_COLORS_WIDOW = { a:"#0c0a10", A:"#171219", b:"#0a0810", l:"#050408", e:"#ff2222", k:"#7a0d0d", w:"#c81c1c" };
+  var SPIDER_W = 15 * SCALE, SPIDER_H = 14 * SCALE; // same grid as the fly; drawn ~3x that scale (see drawCaveSpider)
+
   // electric fly swatter: a one-swing power-up that falls down the sidewalk
   var SWATTER_SPRITE = [
     "....k....",
@@ -1261,7 +1341,7 @@
   // to 0 for them too, same as leaving them undrawn-rotated.
   function bugHeadingAngle(b){
     var vx, vy;
-    if (b.kind === "bee"){
+    if (b.kind === "bee" || b.kind === "spider"){
       vx = b.vx; vy = b.vy;
     } else {
       // x is now a function of DISTANCE fallen (tt), not time -- see
@@ -1362,12 +1442,14 @@
   var startBtn = document.getElementById("startBtn");
   var pauseBtn = document.getElementById("pauseBtn");
   var nightBanner = document.getElementById("nightBanner");
+  var caveBanner = document.getElementById("caveBanner");
   var hudStats = document.getElementById("hudStats");
   var hudSteps = document.getElementById("hudSteps");
   var hudMood = document.getElementById("hudMood");
   var readyLogo = document.getElementById("readyLogo");
   var readyArt = document.getElementById("readyArt");
   var deathArt = document.getElementById("deathArt");
+  var caveVictoryArt = document.getElementById("caveVictoryArt");
   var readyScores = document.getElementById("readyScores");
   var rwStepsLabelCanvas = document.getElementById("rwStepsLabelCanvas");
   var rwStepsLabelCtx = rwStepsLabelCanvas.getContext("2d");
@@ -2015,6 +2097,20 @@
   var MUSIC_MAX_BPM = 200;
   var musicOn = false;
   var musicTimeoutId = null;
+  // "trap" plays for all of normal gameplay (including the cave maze);
+  // "happy" takes over the instant she steps out through the exit cut, and
+  // stays on through the meadow finale -- see the exitApproach->cutOut
+  // transition in updateCaveSequence, and back to "trap" on resetGame
+  var musicMode = "trap";
+
+  // bright bouncy major-key riff for the meadow victory lap -- same 16-step
+  // bar/hi-hat machinery as the trap loop, just a cheerful arpeggio lead and
+  // a light plucky bass instead of a descending riff over a sliding 808
+  var MUSIC_HAPPY_LEAD_ROOT = 523.25; // C5
+  var MUSIC_HAPPY_LEAD_STEPS = { 0: 0, 2: 4, 4: 7, 6: 12, 8: 7, 10: 4, 12: 0, 14: 7 };
+  var MUSIC_HAPPY_BASS_ROOT = 130.81; // C3
+  var MUSIC_HAPPY_BASS_STEPS = [0, 4, 8, 12];
+  var MUSIC_HAPPY_BPM = 132;
 
   function musicLeadFreq(semi){
     return MUSIC_LEAD_ROOT * Math.pow(2, semi / 12);
@@ -2040,8 +2136,39 @@
     osc.start(startTime);
     osc.stop(startTime + dur + 0.02);
   }
+  // short plucky bass note for the happy loop -- no pitch slide, just a
+  // quick triangle-wave pop, so it reads as bouncy rather than heavy
+  function playBounceBass(startTime, secPerStep){
+    var dur = secPerStep * 1.6;
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(MUSIC_HAPPY_BASS_ROOT, startTime);
+    gain.gain.setValueAtTime(0.0001, startTime);
+    gain.gain.exponentialRampToValueAtTime(0.26, startTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + dur);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(startTime);
+    osc.stop(startTime + dur + 0.02);
+  }
   function scheduleMusicLoop(){
     if (!musicOn || !audioCtx) return;
+    if (musicMode === "happy"){
+      var secPerStepH = (60 / MUSIC_HAPPY_BPM) / 4;
+      var startAtH = audioCtx.currentTime + 0.05;
+      for (var stepH = 0; stepH < MUSIC_STEPS_PER_BAR; stepH++){
+        var stepTimeH = startAtH + stepH * secPerStepH;
+        if (!MUSIC_HAT_SKIP[stepH]) playHat(stepTimeH, stepH % 4 === 0);
+        if (MUSIC_HAPPY_BASS_STEPS.indexOf(stepH) !== -1) playBounceBass(stepTimeH, secPerStepH);
+        if (MUSIC_HAPPY_LEAD_STEPS.hasOwnProperty(stepH)){
+          playTone(stepTimeH, MUSIC_HAPPY_LEAD_ROOT * Math.pow(2, MUSIC_HAPPY_LEAD_STEPS[stepH] / 12), secPerStepH * 1.8, { type: "triangle", gain: 0.13 });
+        }
+      }
+      var barDurationH = MUSIC_STEPS_PER_BAR * secPerStepH;
+      musicTimeoutId = window.setTimeout(scheduleMusicLoop, barDurationH * 1000);
+      return;
+    }
     var secPerStep = (60 / currentMusicBPM()) / 4;
     var startAt = audioCtx.currentTime + 0.05;
     for (var step = 0; step < MUSIC_STEPS_PER_BAR; step++){
@@ -2408,6 +2535,464 @@
     });
   }
 
+  // ============================================================
+  // The Cave -- a scripted milestone at 30k steps, and its meadow-finale
+  // ending at 40k+15s. See caveStage's declaration (below, with the rest
+  // of the run-scoped state) for the full stage list. Kept as one block:
+  // trigger/update logic and its rendering both live here since they're
+  // tightly coupled and this is the only place either is used.
+  // ============================================================
+
+  // a rounded mouth -- stacked horizontal pixel bands following a quarter-
+  // circle profile (width ~ sqrt(1-(1-t)^2)) rather than a linear/sine
+  // taper, so it reads as an actual dome instead of a point. archW is
+  // deliberately narrower than the lane it sits in -- the opening doesn't
+  // have to fill the sidewalk edge-to-edge.
+  function drawCaveRoundedMouth(cx, apexY, archW, mouthH, color, stepsN){
+    stepsN = stepsN || 10;
+    ctx.fillStyle = color;
+    var rowH = mouthH/stepsN;
+    for (var i=0;i<stepsN;i++){
+      var tt = (i + 0.5)/stepsN;
+      var halfW = (archW/2) * Math.sqrt(Math.max(0, 1 - (1-tt)*(1-tt)));
+      var y = apexY + i*rowH;
+      ctx.fillRect(Math.round(cx - halfW), Math.round(y), Math.round(halfW*2), Math.ceil(rowH) + 1);
+    }
+  }
+
+  var CAVE_MOUNTAIN_BASE = "#4a3323", CAVE_MOUNTAIN_ALT = "#5f4530", CAVE_MOUNTAIN_HI = "#7a5c40";
+
+  // the entrance mountain, drawn on top of the ordinary sidewalk while
+  // she's still outside -- grows from a small, distant silhouette to a
+  // large, close one as progress (0..1) climbs through found+approach
+  function drawCaveMountainEntrance(progress){
+    var laneW = SIDE_R - SIDE_L, midX = (SIDE_L+SIDE_R)/2;
+    var baseY = H * (0.20 + 0.30*progress);
+    var mouthH = H * (0.12 + 0.34*progress);
+    var archW = laneW * 0.62;
+    var rise = mouthH*2.1;
+    var bands = 6;
+    var topSpan = laneW*0.7;
+    var botSpan = Math.max(W*0.98, laneW*2.6);
+    for (var i=0;i<bands;i++){
+      var t = i/(bands-1);
+      var span = topSpan + (botSpan-topSpan)*(t*t);
+      var bandH = rise/bands;
+      var y = baseY - rise + i*bandH;
+      var x0 = Math.max(0, midX-span/2), x1 = Math.min(W, midX+span/2);
+      if (x1<=x0) continue;
+      pixelNoiseFill(x0, y, x1-x0, bandH+2, CAVE_MOUNTAIN_BASE, i%2 ? CAVE_MOUNTAIN_ALT : CAVE_MOUNTAIN_HI, 6, 0.17);
+    }
+    ctx.fillStyle = "#3a2818";
+    for (var x=0; x<W; x+=8){
+      if (x > SIDE_L-4 && x < SIDE_R+4) continue;
+      var jag = 4 + ((Math.floor(x/8)*11) % 7);
+      ctx.fillRect(x, baseY-jag, 8, jag);
+    }
+    var apexY = baseY - mouthH*1.0;
+    drawCaveRoundedMouth(midX, apexY, archW, mouthH, "#0d0a10", 10);
+    drawCaveRoundedMouth(midX, apexY + mouthH*0.15, archW*0.78, mouthH*0.85, "#000", 9);
+  }
+
+  // the far end of the tunnel once the maze has bottomed out -- the same
+  // rounded silhouette as the entrance, lit instead of dark, growing
+  // closer/brighter as progress (0..1) climbs through exitApproach. A
+  // sunburst of light beams fans out of the mouth (no soft halo circle --
+  // just directional rays down onto the path toward her)
+  function drawCaveExitGlow(progress){
+    var laneW = SIDE_R - SIDE_L, midX = (SIDE_L+SIDE_R)/2;
+    var apexY = H * (0.30 - 0.22*progress);
+    var mouthH = H * (0.15 + 0.13*progress);
+    var archW = laneW * 0.56;
+    var cy = apexY + mouthH*0.5;
+
+    var beamDirs = [
+      [-0.95, 1.05], [-0.6, 1.4], [-0.22, 1.6],
+      [0.22, 1.6], [0.6, 1.4], [0.95, 1.05]
+    ];
+    var beamLen = H * (0.5 + 0.5*progress);
+    var shimmer = 0.85 + Math.sin(t*3)*0.15;
+    ctx.save();
+    ctx.fillStyle = "#fff7de";
+    for (var bi=0; bi<beamDirs.length; bi++){
+      var d = beamDirs[bi], nd = Math.hypot(d[0], d[1]);
+      var dx = d[0]/nd, dy = d[1]/nd;
+      var perpX = -dy, perpY = dx; // perpendicular to the beam, for its width
+      var beamW = mouthH * 0.16;
+      var ex = midX + dx*beamLen, ey = cy + dy*beamLen;
+      ctx.globalAlpha = (bi%2===0 ? 0.26 : 0.16) * (0.4+0.6*progress) * shimmer;
+      ctx.beginPath();
+      ctx.moveTo(midX - perpX*beamW*0.3, cy - perpY*beamW*0.3);
+      ctx.lineTo(midX + perpX*beamW*0.3, cy + perpY*beamW*0.3);
+      ctx.lineTo(ex + perpX*beamW, ey + perpY*beamW);
+      ctx.lineTo(ex - perpX*beamW, ey - perpY*beamW);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+
+    drawCaveRoundedMouth(midX, apexY, archW, mouthH, "#fff7de", 10);
+    drawCaveRoundedMouth(midX, apexY + mouthH*0.13, archW*0.8, mouthH*0.87, "#ffffff", 9);
+  }
+
+  // cave walls + light-brown floor, replacing the grass+sidewalk while
+  // she's inside -- same dithered-fleck technique as drawBackground, same
+  // lane width/position so her movement bounds don't have to change
+  function drawCaveInsideGround(){
+    pixelNoiseFill(0, 0, W, H, "#15111a", "#241c2c", SCALE*2, 0.16, scrollY);
+    pixelNoiseFill(SIDE_L, 0, SIDE_R-SIDE_L, H, "#a3835c", "#b3946e", SCALE*2, 0.13, scrollY);
+    ctx.fillStyle = "#0d0a10";
+    var rowOffset = scrollY % 10;
+    for (var y=rowOffset-10; y<H+10; y+=10){
+      var jag = 3 + ((Math.floor(y/10)*7) % 5);
+      ctx.fillRect(Math.round(SIDE_L-jag), y, jag, 8);
+      ctx.fillRect(Math.round(SIDE_R), y, jag, 8);
+    }
+  }
+
+  // the big widow chases her the entire time she's inside/exiting the cave
+  // -- always on screen, tracking her x position, with a quick skitter/bob
+  // so she reads as running rather than statically parked there. Draw-only:
+  // she has no hitbox anywhere in the collision code, so she can never
+  // actually catch up and end the run, only keep the pressure on
+  function drawCaveSpider(){
+    if (caveStage !== "inside" && caveStage !== "exitApproach") return;
+    var scuttle = Math.sin(t*9) * 4;      // fast side-to-side leg-scuttle
+    var bob = Math.abs(Math.sin(t*9)) * 3; // quick up/down bounce, same rhythm
+    var spx = SCALE*3;
+    var cx = girl.x + scuttle, topY = girl.y + GIRL_H*1.25 + bob;
+    ctx.save();
+    drawSpriteRotated(ctx, SPIDER_BODY_WIDOW, SPIDER_COLORS_WIDOW, cx, topY, spx, SPIDER_H*3, Math.PI);
+    ctx.restore();
+  }
+
+  // the meadow beyond the cave -- full-bleed green, no lane at all: unlike
+  // every ground before it (a walkable strip inside grass margins), this
+  // one hands the whole width back to her
+  function drawMeadowGround(){
+    pixelNoiseFill(0, 0, W, H, "#6fa84a", "#84c05c", SCALE*2, 0.16, scrollY);
+  }
+
+  var meadowFlowers = [];
+  function buildMeadowFlowers(){
+    meadowFlowers = [];
+    var stripH = 30;
+    for (var y0=-40; y0<H+40; y0+=stripH){
+      var count = 3 + Math.floor(Math.random()*3);
+      for (var i=0;i<count;i++){
+        meadowFlowers.push({ x: Math.random()*W, y: y0 + Math.random()*stripH, r: 5 + Math.random()*4 });
+      }
+    }
+  }
+  // scrolls the same way grassDecor does -- each flower just respawns at
+  // the top once it scrolls off the bottom, rather than a wrap-offset trick
+  function scrollMeadowFlowers(dt, speed){
+    meadowFlowers.forEach(function(f){
+      f.y += speed*dt;
+      if (f.y - f.r > H + 20){
+        f.y = -20 - Math.random()*40;
+        f.x = Math.random()*W;
+      }
+    });
+  }
+  function drawMeadowFlowers(){
+    meadowFlowers.forEach(function(f){ drawFlower(f.x, f.y, f.r); });
+  }
+
+  // how far the maze has narrowed, 0 at the 30k entrance to 1 once the
+  // gap has bottomed out at 40k
+  function caveGapProgress(){
+    return Math.max(0, Math.min(1, (steps - CAVE_ENTER_STEPS) / (CAVE_EXIT_STEPS - CAVE_ENTER_STEPS)));
+  }
+  function caveGapWidth(){
+    var laneW = SIDE_R - SIDE_L;
+    var wide = laneW * 0.82;
+    var tight = GIRL_W * 1.5;
+    return wide + (tight - wide) * caveGapProgress();
+  }
+  // a winding path center, two summed sine waves for an organic wander --
+  // same technique as the maze mockup this is built from
+  function caveGapCenterX(idx){
+    var laneW = SIDE_R - SIDE_L, midX = (SIDE_L+SIDE_R)/2;
+    var amp = Math.max(0, (laneW - caveGapWidth())/2 - 6);
+    return midX + Math.sin(idx*0.35)*amp*0.7 + Math.sin(idx*0.19 + 1.7)*amp*0.4;
+  }
+  function spawnWebStrip(){
+    var gapW = caveGapWidth();
+    var cx = caveGapCenterX(caveWebStripIndex);
+    var leftClear = cx - gapW/2, rightClear = cx + gapW/2;
+    var count = 3 + Math.floor(Math.random()*3);
+    for (var i=0;i<count;i++){
+      var size = 17 + Math.random()*10;
+      var x = SIDE_L + Math.random()*(SIDE_R-SIDE_L);
+      if (x+size*0.4 > leftClear && x-size*0.4 < rightClear) continue; // keep the gap clear
+      var y = -size - Math.random()*(CAVE_WEB_STRIP_H-4);
+      webs.push({ x: x, y: y, size: size, rot: (Math.random()-0.5)*0.5, spider: Math.random() < 0.22 });
+    }
+  }
+  // stamps a chunky pixel-grid line between two points -- fakes a hand-drawn
+  // pixel-art stroke (small square dabs snapped to a grid) instead of a thin
+  // antialiased canvas line, matching the blocky square-web reference art
+  function pixelLine(x0, y0, x1, y1, px){
+    var dx = x1-x0, dy = y1-y0;
+    var dist = Math.sqrt(dx*dx+dy*dy);
+    var steps = Math.max(1, Math.round(dist/(px*0.85)));
+    for (var i=0;i<=steps;i++){
+      var t = i/steps;
+      var gx = Math.round((x0+dx*t)/px)*px, gy = Math.round((y0+dy*t)/px)*px;
+      ctx.fillRect(gx-px/2, gy-px/2, px, px);
+    }
+  }
+  // a tiny spider silhouette perched at the web's center
+  function drawWebSpiderMini(px){
+    var bodyR = px*0.9;
+    ctx.fillStyle = "#15111a";
+    ctx.beginPath(); ctx.arc(0, 0, bodyR, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(0, -bodyR*1.15, bodyR*0.62, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = "#c81c1c";
+    ctx.fillRect(-px*0.22, -px*0.3, px*0.44, px*0.6);
+    ctx.strokeStyle = "#15111a";
+    ctx.lineWidth = Math.max(1, px*0.35);
+    var legAngles = [-2.35,-1.95,-1.2,-0.75,0.75,1.2,1.95,2.35];
+    for (var i=0;i<legAngles.length;i++){
+      var a = legAngles[i];
+      var kx = Math.cos(a)*bodyR*1.6, ky = Math.sin(a)*bodyR*1.6;
+      var ex = Math.cos(a)*bodyR*2.8, ey = Math.sin(a)*bodyR*2.8;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a)*bodyR*0.7, Math.sin(a)*bodyR*0.7);
+      ctx.lineTo(kx, ky);
+      ctx.lineTo(ex, ey);
+      ctx.stroke();
+    }
+  }
+  // square-framed pixel web: an outer frame with flared corner anchors, the
+  // two full corner-to-corner diagonals crossing at the center, and a couple
+  // of nested inset rings for a spiral-maze feel -- chunky pixel dabs
+  // throughout rather than smooth lines, with an occasional spider perched
+  // in the middle
+  function drawWebIcon(x, y, size, rot, hasSpider){
+    var r = size/2;
+    var px = Math.max(1.3, size/11);
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot || 0);
+    ctx.fillStyle = "rgba(238,238,246,.92)";
+
+    var c = [[-r,-r],[r,-r],[r,r],[-r,r]];
+    // outer frame
+    for (var i=0;i<4;i++){
+      var a = c[i], b = c[(i+1)%4];
+      pixelLine(a[0], a[1], b[0], b[1], px);
+    }
+    // flared corner anchors, continuing outward past each corner
+    for (i=0;i<4;i++){
+      var cx2 = c[i][0], cy2 = c[i][1];
+      var ox = cx2 + (cx2>0?1:-1)*px*2.1, oy = cy2 + (cy2>0?1:-1)*px*2.1;
+      pixelLine(cx2, cy2, ox, oy, px);
+    }
+    // full diagonals crossing at the center
+    pixelLine(c[0][0], c[0][1], c[2][0], c[2][1], px);
+    pixelLine(c[1][0], c[1][1], c[3][0], c[3][1], px);
+    // nested inset rings, each with a small torn gap on one side
+    var ringT = [0.62, 0.32];
+    for (var ri=0; ri<ringT.length; ri++){
+      var tt = ringT[ri], skip = ri;
+      var rc = [[-r*tt,-r*tt],[r*tt,-r*tt],[r*tt,r*tt],[-r*tt,r*tt]];
+      for (i=0;i<4;i++){
+        if (i === skip) continue;
+        var a2 = rc[i], b2 = rc[(i+1)%4];
+        pixelLine(a2[0], a2[1], b2[0], b2[1], px);
+      }
+    }
+    if (hasSpider) drawWebSpiderMini(px);
+    ctx.restore();
+  }
+  function drawCaveWebs(){
+    webs.forEach(function(w){ drawWebIcon(w.x, w.y, w.size, w.rot, w.spider); });
+  }
+
+  // the entrance trigger -- kills every bug on screen (reusing each kill's
+  // existing squish/score-popup effect rather than a new one), stops
+  // further spawns, and drops the "You found the cave" callout
+  // her walkable range -- the normal sidewalk lane everywhere except the
+  // meadow finale, where the lane constraint drops entirely and she can
+  // roam the full screen width, old grass margins included
+  function girlMinX(){ return caveStage === "meadow" ? (GIRL_W/2 + 2) : GIRL_MIN_X; }
+  function girlMaxX(){ return caveStage === "meadow" ? (W - GIRL_W/2 - 2) : GIRL_MAX_X; }
+
+  function triggerCaveEntry(){
+    bugs.slice().forEach(function(b){ registerKill(b, false); });
+    bugs = [];
+    powerUps = [];
+    caveStage = "found";
+    caveStageTimer = 0;
+    caveApproachElapsed = 0;
+    showCaveBanner("You found the cave");
+  }
+
+  function triggerCaveExit(){
+    caveStage = "exitApproach";
+    caveStageTimer = 0;
+    caveExitElapsed = 0;
+  }
+
+  function showCaveBanner(text){
+    caveBanner.textContent = text;
+    caveBanner.classList.add("show");
+    caveBannerTimer = CAVE_BANNER_DURATION;
+  }
+
+  // advances every timer/transition in the cave arc. Called once per frame
+  // whenever caveStage !== "none"; returns true if the world should freeze
+  // this frame (the black/white cut beats), same idea as the existing
+  // night-transition freeze.
+  function updateCaveSequence(dt){
+    if (caveBannerTimer > 0){
+      caveBannerTimer = Math.max(0, caveBannerTimer - dt);
+      if (caveBannerTimer === 0) caveBanner.classList.remove("show");
+    }
+
+    caveStageTimer += dt;
+
+    if (caveStage === "found"){
+      caveApproachElapsed += dt;
+      if (caveStageTimer >= CAVE_FOUND_HOLD){ caveStage = "approach"; caveStageTimer = 0; }
+      return false;
+    }
+    if (caveStage === "approach"){
+      caveApproachElapsed += dt;
+      if (caveStageTimer >= CAVE_APPROACH_DURATION){ caveStage = "cutIn"; caveStageTimer = 0; }
+      return false;
+    }
+    if (caveStage === "cutIn"){
+      if (caveStageTimer >= CAVE_CUT_DURATION){
+        caveStage = "inside";
+        caveStageTimer = 0;
+        caveWebStripTimer = 0;
+        caveWebStripIndex = 0;
+        caveSpiderlingTimer = SPIDERLING_MIN_INTERVAL + Math.random()*(SPIDERLING_MAX_INTERVAL-SPIDERLING_MIN_INTERVAL);
+        powerUpTimer = 1.5 + Math.random()*1.5; // coffee shows up fast once she's inside
+      }
+      return true; // frozen black beat
+    }
+    if (caveStage === "inside"){
+      updateCaveWebs(dt);
+      return false;
+    }
+    if (caveStage === "exitApproach"){
+      caveExitElapsed += dt;
+      updateCaveWebs(dt); // let the last on-screen webs finish scrolling through/tapering off
+      if (caveStageTimer >= CAVE_EXIT_APPROACH_DURATION){
+        caveStage = "cutOut";
+        caveStageTimer = 0;
+        webs = [];
+        // happy music kicks in right as she steps out through the white cut
+        stopMusic();
+        musicMode = "happy";
+        startMusic();
+      }
+      return false;
+    }
+    if (caveStage === "cutOut"){
+      if (caveStageTimer >= CAVE_EXIT_CUT_DURATION){
+        caveStage = "meadow";
+        caveStageTimer = 0;
+        meadowElapsed = 0;
+        buildMeadowFlowers();
+      }
+      return true; // frozen white beat
+    }
+    if (caveStage === "meadow"){
+      scrollMeadowFlowers(dt, 90);
+      meadowElapsed += dt;
+      if (meadowElapsed >= MEADOW_DURATION){
+        caveVictoryEnd();
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  // spawns/scrolls/collides the web maze -- ignores MAX_BUGS_ON_SCREEN
+  // entirely (it's a separate array), every strand shares one fixed speed,
+  // and touching one ends the run exactly like touching a bug does
+  function updateCaveWebs(dt){
+    if (caveStage === "inside"){
+      caveWebStripTimer -= dt;
+      if (caveWebStripTimer <= 0){
+        caveWebStripTimer = CAVE_WEB_STRIP_H / CAVE_WEB_SPEED;
+        spawnWebStrip();
+        caveWebStripIndex++;
+      }
+      // little spiders dive at her throughout the maze -- same straight-line
+      // dive-bomb mechanic as a bee, just spawned much more often
+      caveSpiderlingTimer -= dt;
+      if (caveSpiderlingTimer <= 0){
+        caveSpiderlingTimer = SPIDERLING_MIN_INTERVAL + Math.random()*(SPIDERLING_MAX_INTERVAL-SPIDERLING_MIN_INTERVAL);
+        spawnCaveSpiderling();
+      }
+    }
+    var girlHalfW = GIRL_W*0.22, girlHalfH = GIRL_H*0.11;
+    var gx = girl.x - girlHalfW, gy = girl.y + GIRL_H*0.16 - girlHalfH;
+    for (var i=webs.length-1; i>=0; i--){
+      var w = webs[i];
+      w.y += CAVE_WEB_SPEED*dt;
+      if (w.y > H + 20){ webs.splice(i,1); continue; }
+      var whw = w.size*0.4, whh = w.size*0.4;
+      if (rectsOverlap(gx,gy,girlHalfW*2,girlHalfH*2, w.x-whw,w.y-whh,whw*2,whh*2)){
+        gameOver();
+        return;
+      }
+    }
+  }
+
+  // the meadow's 15s timer runs out -- ends the run exactly like gameOver()
+  // does (same high-score bookkeeping, same overlay/leaderboard flow), just
+  // with the title swapped to a win and the crying-girl death art skipped
+  function caveVictoryEnd(){
+    state = STATE_OVER;
+    shake = 0;
+    stopBubbleAmbient();
+    stopMusic();
+    screenWrap.classList.add("death");
+    // suppress the crying-girl PNG -- same technique goToHighscores() uses
+    // to swap what's behind the overlay card without touching the class
+    // that also hides the HUD/pause button -- and show the happy one in
+    // its place, centered in the card (see .cave-victory-art)
+    deathArt.style.opacity = "0";
+    caveVictoryArt.hidden = false;
+
+    if (score > highScore) saveHighScore(score);
+    if (steps > highSteps) saveHighSteps(steps);
+
+    overlayTitleWrap.hidden = false;
+    setOverlayTitle("DIVA UP", true);
+    overlayTitleWrap.classList.remove("drop-in");
+    void overlayTitleWrap.offsetWidth;
+    overlayTitleWrap.classList.add("drop-in");
+    overlayText.hidden = true;
+
+    flavorTextEl.textContent = "She danced straight through The Cave!";
+    flavorWatch.hidden = false;
+
+    overlay.classList.add("split-layout");
+    deathWatch.hidden = false;
+    refreshDeathWatch(steps, score, Math.max(highSteps, steps), Math.max(highScore, score));
+    startBtn.textContent = "Boogie Again";
+    viewScoresBtn.hidden = false;
+    highscoresPanel.hidden = true;
+    hideNameEntry();
+    showOverlay();
+    refreshHud();
+
+    var scoreAtDeath = score;
+    fetchLeaderboard(function(){
+      if (state !== STATE_OVER || score !== scoreAtDeath) return;
+      if (qualifiesForTop10(scoreAtDeath)) showNameEntry(scoreAtDeath);
+    });
+  }
+
   // ---------- game state ----------
   var STATE_READY = "ready", STATE_PLAYING = "playing", STATE_PAUSED = "paused", STATE_OVER = "over", STATE_HIGHSCORES = "highscores";
   var state = STATE_READY;
@@ -2443,6 +3028,22 @@
   var animFrame = 0;
   var shake = 0;
 
+  // ---------- The Cave: run-scoped state ----------
+  // "none" (normal play) -> "found" -> "approach" -> "cutIn" -> "inside"
+  // -> "exitApproach" -> "cutOut" -> "meadow" -> run ends (caveVictoryEnd)
+  var caveStage = "none";
+  var caveStageTimer = 0;      // seconds spent in the current caveStage
+  var caveTriggered = false;   // guards the 30k entry trigger to once per run
+  var caveExitTriggered = false; // guards the 40k exit trigger to once per run
+  var caveBannerTimer = 0;     // independent of caveStageTimer -- just the chip's own hang time
+  var caveSpiderlingTimer = 0; // counts down to the next little-spider dive while "inside"
+  var meadowElapsed = 0;       // counts up through MEADOW_DURATION once in the meadow
+  var webs = [];               // spiderweb obstacles while inside the cave: { x, y, size, rot }
+  var caveWebStripTimer = 0;
+  var caveWebStripIndex = 0;   // drives the winding gap-path phase, one tick per generated strip
+  var caveApproachElapsed = 0; // seconds since the entrance trigger, spans "found"+"approach" -- how close/large the mountain draws
+  var caveExitElapsed = 0;     // seconds since the exit trigger, spans "exitApproach" -- how close/bright the exit glow draws
+
   var keyLeft = false, keyRight = false;
   var dragging = false, pointerTargetX = null;
 
@@ -2467,6 +3068,16 @@
     if (nightBanner) nightBanner.classList.remove("show", "night", "day");
     animTimer = 0; animFrame = 0;
     shake = 0;
+    caveStage = "none"; caveStageTimer = 0; caveTriggered = false; caveExitTriggered = false;
+    caveBannerTimer = 0; caveSpiderlingTimer = 0; meadowElapsed = 0;
+    webs = []; caveWebStripTimer = 0; caveWebStripIndex = 0;
+    caveApproachElapsed = 0; caveExitElapsed = 0;
+    musicMode = "trap";
+    if (caveBanner) caveBanner.classList.remove("show");
+    // a cave-victory ending (see caveVictoryEnd) leaves the crying-girl
+    // death art suppressed -- put it back for the next normal death
+    deathArt.style.opacity = "";
+    if (caveVictoryArt) caveVictoryArt.hidden = true;
     buildScenery();
   }
 
@@ -2536,10 +3147,35 @@
     });
   }
 
+  // little cave spiders: the same straight-line dive-bomb as a bee (a fixed
+  // aim point, not a live homing chase), just smaller, a bit faster, and
+  // spawned far more often -- see SPIDERLING_MIN/MAX_INTERVAL
+  function spawnCaveSpiderling(){
+    var minX = SIDE_L + SPIDERLING_W/2 + 2;
+    var maxX = SIDE_R - SPIDERLING_W/2 - 2;
+    var startX = minX + Math.random()*Math.max(1, maxX-minX);
+    var startY = -SPIDERLING_H - 10;
+    var targetX = girl.x, targetY = girl.y + GIRL_H*0.5;
+    var dx = targetX - startX, dy = targetY - startY;
+    var dist = Math.max(1, Math.sqrt(dx*dx + dy*dy));
+    bugs.push({
+      kind: "spider",
+      w: SPIDERLING_W, h: SPIDERLING_H,
+      baseX: startX, x: startX, y: startY,
+      vx: (dx/dist) * SPIDERLING_SPEED,
+      vy: (dy/dist) * SPIDERLING_SPEED,
+      speed: SPIDERLING_SPEED,
+      amp: 0, freq: 0, phase: 0, tt: 0,
+      nightVariant: false,
+      trail: null // she crawls/leaps, not a flier -- no flight-path trail
+    });
+  }
+
   function spawnPowerUp(){
     var r = Math.random();
     // coffee spawns half as often as the swatter or the pill (2:2:1 weighting)
-    var type = r < 0.4 ? "swatter" : r < 0.8 ? "bubble" : "coffee";
+    // -- except inside The Cave, where it's the only power-up on the table
+    var type = caveStage === "inside" ? "coffee" : (r < 0.4 ? "swatter" : r < 0.8 ? "bubble" : "coffee");
     var w = type === "swatter" ? SWATTER_W : type === "bubble" ? PILL_W : COFFEE_W;
     var h = type === "swatter" ? SWATTER_H : type === "bubble" ? PILL_H : COFFEE_H;
     var minX = SIDE_L + w/2 + 2;
@@ -2662,34 +3298,65 @@
       return; // quick pause for the day-to-night transition
     }
 
+    // The Cave: the black/white cut beats are a true world-freeze, same as
+    // the two timers just above -- steps hold still (checked BEFORE t/steps
+    // advance below) so the beat always takes the same wall-clock time
+    if (caveStage === "cutIn" || caveStage === "cutOut"){
+      updateCaveSequence(dt);
+      return;
+    }
+
     t += dt;
     steps = t * STEPS_PER_SECOND;
     var diff = difficultyForLevel(level);
     recomputeScore();
 
-    var newLevel = 1 + Math.floor(steps / STEPS_PER_LEVEL);
-    if (newLevel !== level){
-      level = newLevel;
-      if (level % 2 === 0 && level !== lastBeeLevel){
-        spawnBee();
-        lastBeeLevel = level;
+    // The Cave: one-shot triggers at 30k (entrance) and 40k (exit) steps.
+    // Both only ever fire while caveStage is still "none"/"inside"
+    // respectively, guarded by their own flag, so they can't re-fire if
+    // steps ever momentarily reads the same value twice in a row.
+    if (caveStage === "none" && !caveTriggered && steps >= CAVE_ENTER_STEPS){
+      caveTriggered = true;
+      triggerCaveEntry();
+    }
+    if (caveStage === "inside" && !caveExitTriggered && steps >= CAVE_EXIT_STEPS){
+      caveExitTriggered = true;
+      triggerCaveExit();
+    }
+
+    // day/night cycling and the normal level-up bee don't apply once she's
+    // committed to the cave arc (cave -> meadow -> run end) -- there's no
+    // sky to flip, and no ordinary enemies for the rest of this run
+    if (caveStage === "none"){
+      var newLevel = 1 + Math.floor(steps / STEPS_PER_LEVEL);
+      if (newLevel !== level){
+        level = newLevel;
+        if (level % 2 === 0 && level !== lastBeeLevel){
+          spawnBee();
+          lastBeeLevel = level;
+        }
       }
+
+      var curNightCycle = Math.floor(steps / NIGHT_CYCLE_STEPS);
+      if (curNightCycle !== nightCycle){
+        nightCycle = curNightCycle;
+        nightMode = (nightCycle % 2 === 1);
+        nightFreezeTimer = NIGHT_TRANSITION_DURATION;
+        nightBannerTimer = NIGHT_TRANSITION_DURATION;
+        nightBanner.textContent = nightMode ? "Tomorrow steps!" : "Good morning beautiful ;)";
+        nightBanner.classList.toggle("night", nightMode);
+        nightBanner.classList.toggle("day", !nightMode);
+        nightBanner.classList.add("show");
+        return; // pause immediately so the day/night banner reads clearly
+      }
+    } else {
+      // advances every cave-arc timer/transition; a true return value means
+      // this frame is a frozen beat (the black/white cuts), same idea as
+      // the night-transition freeze just above
+      if (updateCaveSequence(dt)) return;
     }
 
-    var curNightCycle = Math.floor(steps / NIGHT_CYCLE_STEPS);
-    if (curNightCycle !== nightCycle){
-      nightCycle = curNightCycle;
-      nightMode = (nightCycle % 2 === 1);
-      nightFreezeTimer = NIGHT_TRANSITION_DURATION;
-      nightBannerTimer = NIGHT_TRANSITION_DURATION;
-      nightBanner.textContent = nightMode ? "Tomorrow steps!" : "Good morning beautiful ;)";
-      nightBanner.classList.toggle("night", nightMode);
-      nightBanner.classList.toggle("day", !nightMode);
-      nightBanner.classList.add("show");
-      return; // pause immediately so the day/night banner reads clearly
-    }
-
-    // sidewalk and grass decor scroll down so she reads as walking forward
+    // sidewalk/cave/meadow decor scroll down so she reads as walking forward
     scrollScenery(dt, Math.min(150, 60 + (level-1)*4));
 
     if (zapTimer > 0) zapTimer = Math.max(0, zapTimer - dt);
@@ -2718,23 +3385,34 @@
       }
       girl.x += girl.vx*dt;
     }
-    if (girl.x < GIRL_MIN_X){ girl.x = GIRL_MIN_X; girl.vx = 0; }
-    if (girl.x > GIRL_MAX_X){ girl.x = GIRL_MAX_X; girl.vx = 0; }
+    var curMinX = girlMinX(), curMaxX = girlMaxX();
+    if (girl.x < curMinX){ girl.x = curMinX; girl.vx = 0; }
+    if (girl.x > curMaxX){ girl.x = curMaxX; girl.vx = 0; }
 
     // spawn bugs (capped so density stops climbing once the screen is full)
-    spawnTimer -= dt;
-    if (spawnTimer <= 0){
-      if (bugs.length < MAX_BUGS_ON_SCREEN) spawnBugs();
-      spawnTimer = diff.spawnInterval * (0.85 + Math.random()*0.3);
+    // -- suppressed for the whole cave/meadow arc; the cave has its own
+    // web-obstacle spawner instead (see updateCaveWebs), and the meadow is
+    // deliberately hazard-free
+    if (caveStage === "none"){
+      spawnTimer -= dt;
+      if (spawnTimer <= 0){
+        if (bugs.length < MAX_BUGS_ON_SCREEN) spawnBugs();
+        spawnTimer = diff.spawnInterval * (0.85 + Math.random()*0.3);
+      }
     }
 
     // occasional power-up: the electric swatter or the pink kill-bubble pill
-    // (keeps showing up even if she's already holding one)
+    // (keeps showing up even if she's already holding one) -- outside the
+    // cave arc only, aside from "inside" itself where spawnPowerUp() gates
+    // the type down to coffee-only
     powerUpTimer -= dt;
-    if (powerUpTimer <= 0){
+    if ((caveStage === "none" || caveStage === "inside") && powerUpTimer <= 0){
       if (powerUps.length === 0){
         spawnPowerUp();
-        powerUpTimer = 10 + Math.random()*6.25; // 25% less often than before
+        // inside the cave it's coffee every time (see spawnPowerUp) and it
+        // shows up 3x as often as a normal power-up does outside -- the
+        // maze's only pickup, so it needs to keep appearing
+        powerUpTimer = caveStage === "inside" ? (10 + Math.random()*6.25) / 3 : (10 + Math.random()*6.25); // 25% less often than before, outside the cave
       } else {
         powerUpTimer = 2;
       }
@@ -2797,7 +3475,7 @@
 
     for (var i=bugs.length-1; i>=0; i--){
       var b = bugs[i];
-      if (b.kind === "bee"){
+      if (b.kind === "bee" || b.kind === "spider"){
         b.tt += dt*bugSpeedMult;
         // straight line toward the fixed spawn-time target, not a live homing chase
         b.x += b.vx*bugSpeedMult*dt;
@@ -2886,6 +3564,7 @@
       if (state === STATE_OVER && score === scoreAtBuzzStart) stopDeathBuzz();
     }, 10000);
     screenWrap.classList.add("death");
+    caveVictoryArt.hidden = true; // a normal death (e.g. a web caught her inside the cave) always uses the crying-girl art
 
     // snapshot the previous bests before updating them, so we know exactly
     // which record (if any) this run just broke
@@ -2971,7 +3650,28 @@
       var mag = shake*10;
       ctx.translate((Math.random()-0.5)*mag, (Math.random()-0.5)*mag);
     }
-    drawBackground();
+
+    // The Cave: the two hard cuts are a full solid fill and nothing else --
+    // a genuine scene break, not a crossfade over whatever's underneath
+    if (caveStage === "cutIn" || caveStage === "cutOut"){
+      ctx.fillStyle = caveStage === "cutIn" ? "#000" : "#fffdf5";
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+      if (shake > 0) shake = Math.max(0, shake - 0.05);
+      return;
+    }
+
+    if (caveStage === "inside" || caveStage === "exitApproach"){
+      drawCaveInsideGround();
+    } else if (caveStage === "meadow"){
+      drawMeadowGround();
+      drawMeadowFlowers();
+    } else {
+      drawBackground();
+      if (caveStage === "found" || caveStage === "approach"){
+        drawCaveMountainEntrance(Math.min(1, caveApproachElapsed / (CAVE_FOUND_HOLD + CAVE_APPROACH_DURATION)));
+      }
+    }
 
     bugs.forEach(function(b){
       // grey flight-path trail, drawn behind the sprite, fading out toward
@@ -2997,6 +3697,8 @@
       } else if (b.kind === "bee"){
         var bf = animFrame === 0 ? BEE_FRAME_A : BEE_FRAME_B;
         drawSpriteRotated(ctx, bf, BEE_COLORS, b.x, b.y, SCALE, b.h, bugHeadingAngle(b));
+      } else if (b.kind === "spider"){
+        drawSpriteRotated(ctx, SPIDER_BODY_WIDOW, SPIDER_COLORS_WIDOW, b.x, b.y, SPIDERLING_PX, b.h, bugHeadingAngle(b));
       } else if (b.nightVariant){
         var mf = animFrame === 0 ? MOTH_FRAME_A : MOTH_FRAME_B;
         drawSpriteRotated(ctx, mf, MOTH_COLORS, b.x, b.y, SCALE, b.h, bugHeadingAngle(b));
@@ -3005,6 +3707,14 @@
         drawSpriteRotated(ctx, ff, FLY_COLORS, b.x, b.y, SCALE, b.h, bugHeadingAngle(b));
       }
     });
+
+    if (caveStage === "inside" || caveStage === "exitApproach"){
+      drawCaveWebs();
+      drawCaveSpider();
+      if (caveStage === "exitApproach"){
+        drawCaveExitGlow(Math.min(1, caveExitElapsed / CAVE_EXIT_APPROACH_DURATION));
+      }
+    }
 
     powerUps.forEach(function(pu){
       // same ITEM_R glow circle for every power-up -- consistent size,
@@ -3342,12 +4052,12 @@
     if (state !== STATE_PLAYING) return;
     dragging = true;
     screenWrap.classList.add("dragging");
-    pointerTargetX = Math.max(GIRL_MIN_X, Math.min(GIRL_MAX_X, localX(e.clientX)));
+    pointerTargetX = Math.max(girlMinX(), Math.min(girlMaxX(), localX(e.clientX)));
     canvas.setPointerCapture(e.pointerId);
   });
   canvas.addEventListener("pointermove", function(e){
     if (!dragging) return;
-    pointerTargetX = Math.max(GIRL_MIN_X, Math.min(GIRL_MAX_X, localX(e.clientX)));
+    pointerTargetX = Math.max(girlMinX(), Math.min(girlMaxX(), localX(e.clientX)));
   });
   function endDrag(){
     dragging = false;
