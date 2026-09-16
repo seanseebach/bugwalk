@@ -1621,27 +1621,36 @@
     pendingScoreForEntry = null;
   }
 
-submitScoreToLeaderboard(name, scoreVal, function(ok, updatedWorldTop10){ // 1. Pass updated data
-  nameEntrySubmit.disabled = false;
-  if (!ok){
-    nameEntryError.hidden = false;
-    return;
-  }
-  hideNameEntry();
-  
-  if (updatedWorldTop10){
-    worldTop10 = updatedWorldTop10; // 2. Update your local reference
-    
-    // 3. Find the exact match (ideally using a unique ID from the server)
-    for (var i = 0; i < worldTop10.length; i++){
-      if (worldTop10[i].name === name && worldTop10[i].score === Math.floor(scoreVal)){
-        worldTop10[i]._mine = true;
-        break; // Stop at the first match
+  function submitNameEntry(){
+    if (pendingScoreForEntry === null) return;
+    var name = sanitizePlayerName(nameEntryInput.value);
+    savePlayerName(name);
+    var scoreVal = pendingScoreForEntry;
+    nameEntrySubmit.disabled = true;
+    nameEntryError.hidden = true;
+    submitScoreToLeaderboard(name, scoreVal, function(ok){
+      nameEntrySubmit.disabled = false;
+      if (!ok){
+        // leave the prompt open (with their name still typed in) and say so
+        // plainly -- silently closing it here is what made a failed save
+        // look like a successful one before
+        nameEntryError.hidden = false;
+        return;
       }
-    }
+      hideNameEntry();
+      if (worldTop10){
+        // flag this run's own row so it stands out in gold when the list
+        // (re)renders, whether that's right now or after tapping High Scores
+        for (var i = 0; i < worldTop10.length; i++){
+          if (worldTop10[i].name === name && worldTop10[i].score === Math.floor(scoreVal)){
+            worldTop10[i]._mine = true;
+            break;
+          }
+        }
+      }
+      renderHighscoresList();
+    });
   }
-  renderHighscoresList();
-});
 
   nameEntrySubmit.addEventListener("click", submitNameEntry);
   nameEntrySkip.addEventListener("click", function(){ hideNameEntry(); });
