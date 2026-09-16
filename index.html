@@ -888,7 +888,17 @@
   // of those two contexts has anything else in common to lean on. If this
   // is left blank the leaderboard UI quietly reports itself as unavailable
   // instead of throwing -- the rest of the game is unaffected either way.
-  var LEADERBOARD_API = "https://jsonblob.com/api/jsonBlob/01a0a891-4e6b-772d-99d2-5879a339a94c";
+  // jsonblob.com (the first backend used here) turned out to only support
+  // CORS for GET -- its PUT endpoint never sends the Access-Control-Allow-*
+  // headers a cross-origin browser write needs, so every save silently died
+  // at the preflight request with no error surfaced anywhere. Verified live
+  // (real browser, real network, not this file's own logic) before
+  // switching: CrudCrud's endpoint below accepts a normal cross-origin
+  // POST/GET/DELETE. One tradeoff worth knowing -- it's a small free/dev
+  // service ("instabilities are possible" per their own site) that may
+  // reclaim endpoints idle for a week or more, not a guaranteed-forever
+  // backend.
+  var LEADERBOARD_API = "https://crudcrud.com/api/a48bba596ca94dd3a0ea62ea3fee7fe3/scores";
 
   // ---------- pixel art data ----------
   var GIRL_BODY = [
@@ -1487,6 +1497,10 @@
   var leaderboardStatus = "idle"; // idle | loading | ready | error | unavailable
   var pendingScoreForEntry = null;
 
+  // CrudCrud stores each submission as its own record (POST creates one,
+  // GET on the collection returns all of them) rather than one shared
+  // document to read-modify-write -- top 10 is just "sort everything by
+  // score, keep the first 10" computed here on every fetch
   function fetchLeaderboard(cb){
     if (!LEADERBOARD_API){
       leaderboardStatus = "unavailable";
@@ -1497,15 +1511,33 @@
     fetch(LEADERBOARD_API, { headers: { "Accept": "application/json" }, cache: "no-store" })
       .then(function(r){ if (!r.ok) throw new Error("bad status " + r.status); return r.json(); })
       .then(function(data){
-        worldTop10 = (data && Array.isArray(data.top10)) ? data.top10.slice(0, 10) : [];
+        var all = Array.isArray(data) ? data : [];
+        all.sort(function(a, b){ return b.score - a.score; });
+        worldTop10 = all.slice(0, 10);
         leaderboardStatus = "ready";
         if (cb) cb();
+        // tidy the store in the background once it's accumulated a lot of
+        // entries below the top 10 -- purely so GETs stay small, never
+        // blocks or affects what's shown
+        if (all.length > 40) pruneLowScores(all);
       })
       .catch(function(err){
         leaderboardStatus = "error";
         if (window.console && console.warn) console.warn("Bug Walk leaderboard fetch failed:", err);
         if (cb) cb();
       });
+  }
+
+  // best-effort cleanup -- every submission being its own record means there
+  // is no read-modify-write step trimming the store back to 10 automatically,
+  // so it grows unless something prunes it. Deletes are fire-and-forget: a
+  // failure here just leaves a few extra low-score rows until the next pass
+  function pruneLowScores(all){
+    var toDelete = all.slice().sort(function(a, b){ return b.score - a.score; }).slice(20);
+    toDelete.forEach(function(entry){
+      if (!entry._id) return;
+      fetch(LEADERBOARD_API + "/" + entry._id, { method: "DELETE" }).catch(function(){});
+    });
   }
 
   function qualifiesForTop10(scoreVal){
@@ -1515,33 +1547,30 @@
     return scoreVal > worldTop10[worldTop10.length - 1].score;
   }
 
-  // re-fetches the freshest copy before writing (rather than trusting the
-  // possibly-stale worldTop10 already in memory) so two players finishing
-  // around the same time don't clobber each other any more than a plain
-  // shared JSON document already risks -- last write still wins either way,
-  // which is a known, acceptable limit of a backend this simple
+  // a plain create -- each run's score is its own record, so unlike a
+  // single shared document there's no read-modify-write window for two
+  // players finishing around the same time to clobber each other
   function submitScoreToLeaderboard(name, scoreVal, cb){
     if (!LEADERBOARD_API){ if (cb) cb(false); return; }
-    fetch(LEADERBOARD_API, { headers: { "Accept": "application/json" }, cache: "no-store" })
-      .then(function(r){ if (!r.ok) throw new Error("bad status " + r.status); return r.json(); })
-      .then(function(data){
-        var list = (data && Array.isArray(data.top10)) ? data.top10.slice(0, 10) : [];
-        list.push({ name: name, score: Math.floor(scoreVal) });
+    fetch(LEADERBOARD_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ name: name, score: Math.floor(scoreVal) })
+    })
+      .then(function(r){
+        // fetch() only rejects on a network-level failure -- an HTTP error
+        // status resolves normally, so this must be checked explicitly or a
+        // failed write gets reported as a success (the exact bug that made
+        // the previous backend's failures invisible)
+        if (!r.ok) throw new Error("bad status " + r.status);
+        return r.json();
+      })
+      .then(function(created){
+        var list = (worldTop10 || []).concat([created]);
         list.sort(function(a, b){ return b.score - a.score; });
-        list = list.slice(0, 10);
-        return fetch(LEADERBOARD_API, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({ top10: list })
-        }).then(function(r){
-          // fetch() only rejects on a network-level failure -- an HTTP error
-          // status (403/404/405/...) resolves normally, so this must be
-          // checked explicitly or a failed write gets reported as a success
-          if (!r.ok) throw new Error("bad status " + r.status);
-          worldTop10 = list;
-          leaderboardStatus = "ready";
-          if (cb) cb(true);
-        });
+        worldTop10 = list.slice(0, 10);
+        leaderboardStatus = "ready";
+        if (cb) cb(true);
       })
       .catch(function(err){
         if (window.console && console.warn) console.warn("Bug Walk leaderboard submit failed:", err);
