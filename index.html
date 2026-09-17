@@ -833,19 +833,26 @@
      itself. Reads and creates are both public by design (any player can
      read the top 10 and post a run with no login) -- Firestore Security
      Rules on the "scores" collection are what keep this safe: writes are
-     validated server-side (name is a string of 1-14 chars, score is a
-     positive integer) and updates/deletes are blocked entirely, so unlike
+     validated server-side (name is a string of 1-14 chars, score is an
+     integer in 0..250000) and updates/deletes are blocked entirely, so unlike
      the CrudCrud endpoint this replaced, the write access itself is a real
      enforced rule, not just an unguessable URL. This project runs on
      Firebase's free Spark plan, which has no request-count ceiling anywhere
      near what a browser game like this needs (50k reads / 20k writes per
      day) and -- unlike the CrudCrud/jsonblob dev-tier services tried
-     before -- doesn't get reclaimed or rate-limited out from under it. -->
+     before -- doesn't get reclaimed or rate-limited out from under it.
+
+     The policy itself is version-controlled in this repo as firestore.rules (and a
+     stricter auth-requiring variant as firestore.rules.auth), and the threat model --
+     what those rules stop, what they cannot, and the migration notes -- is in
+     LEADERBOARD.md. -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import {
-    initializeFirestore, collection, addDoc, getDocs, query, orderBy, limit
+    initializeFirestore, collection, addDoc, getDocs, query, orderBy, limit,
+    serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
   var firebaseConfig = {
     apiKey: "AIzaSyDWdrtd7mxGIcIUYCGfTMY3V8vhgdI2w3E",
@@ -870,28 +877,68 @@
   });
   var scoresCol = collection(db, "scores");
 
+  // --- Identity (optional, degrades cleanly) --------------------------------
+  // If Anonymous Auth is enabled on the project, every browser gets a stable
+  // uid with no UI at all. That's what lets the stricter ruleset (see
+  // firestore.rules.auth) tell a real player apart from a script posting to the
+  // REST API, which otherwise only needs the public web config. If Auth isn't
+  // enabled this rejects with auth/configuration-not-found and we carry on as an
+  // unauthenticated write -- firestore.rules still accepts it, so the client
+  // works under both rulesets and nothing breaks before the console is toggled.
+  var auth = null;
+  try { auth = getAuth(app); } catch (e) { auth = null; }
+
+  var authPromise = null;
+  function ensureAuth(){
+    if (!auth){ return Promise.resolve(null); }
+    if (!authPromise){
+      authPromise = (auth.currentUser
+        ? Promise.resolve(auth.currentUser)
+        : signInAnonymously(auth).then(function(cred){ return cred.user; })
+      ).catch(function(){ return null; });
+    }
+    return authPromise;
+  }
+
   // exposed to the classic script below -- kept intentionally tiny
   // (just "give me the top 20" and "add one run") so the game code never
   // has to know it's talking to Firestore specifically
   window.__bugwalkLeaderboard = {
+    // No secondary orderBy on purpose: adding one on a field that existing runs
+    // don't have would silently drop every legacy score out of the query.
+    // Firestore excludes documents missing the ordered field. Ties are broken
+    // client-side instead -- see renderHighscoresList and LEADERBOARD.md.
     fetchTop10: function(){
       return getDocs(query(scoresCol, orderBy("score", "desc"), limit(20)))
         .then(function(snap){
           var out = [];
           snap.forEach(function(doc){
             var data = doc.data();
-            out.push({ _id: doc.id, name: data.name, score: data.score });
+            out.push({
+              _id: doc.id, name: data.name, score: data.score,
+              createdAt: data.createdAt || null
+            });
           });
           return out;
         });
     },
+    // Created runs carry a server timestamp and, when a session exists, the
+    // writer's uid. Both are additive: firestore.rules accepts them optionally,
+    // and they're what a future migration needs in order to sort ties
+    // deterministically and attribute a run to an identity.
     submitScore: function(name, scoreVal){
-      return addDoc(scoresCol, { name: name, score: scoreVal })
-        .then(function(ref){
-          return { _id: ref.id, name: name, score: scoreVal };
+      return ensureAuth().then(function(user){
+        var payload = { name: name, score: scoreVal, createdAt: serverTimestamp() };
+        if (user){ payload.uid = user.uid; }
+        return addDoc(scoresCol, payload).then(function(ref){
+          return { _id: ref.id, name: name, score: scoreVal, uid: user ? user.uid : null };
         });
+      });
     }
   };
+
+  // start the token handshake before the player finishes a run
+  ensureAuth();
 </script>
 
 <script>
@@ -1739,15 +1786,27 @@
       highscoresList.appendChild(noteZ);
       return;
     }
+    // Competition ranking: equal scores share a rank and the next distinct score
+    // takes the position number (1, 1, 3). The query has no secondary sort, so
+    // tied runs arrive in arbitrary order -- without this, two players on the same
+    // score get different ranks that can flip between fetches.
+    var lastScore = null;
+    var lastRankText = "";
     worldTop10.forEach(function(entry, i){
       var row = document.createElement("div");
       row.className = "hs-row" + (entry._mine ? " mine" : "");
       var rank = document.createElement("span");
       rank.className = "hs-rank";
-      rank.textContent = (i + 1) + ".";
+      if (lastScore !== null && entry.score === lastScore){
+        rank.textContent = lastRankText;
+      } else {
+        lastRankText = (i + 1) + ".";
+        lastScore = entry.score;
+        rank.textContent = lastRankText;
+      }
       var name = document.createElement("span");
       name.className = "hs-name";
-      name.textContent = entry.name || "???";
+      name.textContent = sanitizeForDisplay(entry.name) || "???";
       var scoreEl = document.createElement("span");
       scoreEl.className = "hs-score";
       scoreEl.textContent = formatK(entry.score);
@@ -1756,6 +1815,20 @@
       row.appendChild(scoreEl);
       highscoresList.appendChild(row);
     });
+  }
+
+  // Display-only scrub for names arriving from the shared board. Two classes of
+  // character let a submission misrepresent the list rather than just look silly:
+  // bidi overrides (U+202A-202E, U+2066-2069) reorder rendered text, so a name can
+  // paint what reads as a second score column; and zero-width/invisible characters
+  // (U+200B-200D, U+2060, U+FEFF) render an entry as though it had no name at all.
+  // Both are stripped for display only -- the stored value is never rewritten, and
+  // nothing here changes ranking or the "mine" highlight, which compare raw values.
+  // Stacked combining marks are deliberately left alone: they're legitimate in many
+  // scripts and can only ever look ugly, not misleading.
+  var BIDI_AND_INVISIBLE = /[\u202A-\u202E\u2066-\u2069\u200B-\u200D\u2060\uFEFF]/g;
+  function sanitizeForDisplay(raw){
+    return String(raw == null ? "" : raw).replace(BIDI_AND_INVISIBLE, "");
   }
 
   function sanitizePlayerName(raw){
