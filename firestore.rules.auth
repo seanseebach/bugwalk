@@ -1,0 +1,68 @@
+rules_version = '2';
+
+// ---------------------------------------------------------------------------
+// Bug Walk leaderboard rules -- STRICT VARIANT (requires Anonymous Auth).
+//
+// Same shape validation as firestore.rules, plus: a submission must come from a
+// signed-in session, and the uid it claims must be the uid it holds.
+//
+// WHY THIS EXISTS
+// With the base ruleset (open create, no auth), anyone can append a run with curl
+// or the Firestore REST API using the public web config. The config apiKey is a
+// project identifier, not a credential, so it can't be revoked or hidden -- the
+// only way to require a token is to require an identity.
+//
+// WHAT IT STOPS
+// Non-page callers: curl, REST, scripts, and copied payloads. They have no token
+// and no way to mint one outside the app.
+//
+// WHAT IT DOES NOT STOP -- read this before enabling it
+// A person who loads the game and calls its own submit function still writes a
+// row, because that call now carries a legitimate anonymous uid. Auto sign-in
+// means the identity is free and unlimited. So this raises the cost of abusing
+// the board; it does not make the board trustworthy. Only the server-side
+// verification described in LEADERBOARD.md can do that.
+//
+// TWO-STEP DEPLOY -- the order matters
+//   1. Firebase console -> Authentication -> Sign-in method -> enable Anonymous
+//   2. firebase deploy --only firestore:rules:strict   (after renaming this file
+//      to firestore.rules, or pointing firebase.json at it)
+// Deploying this before Auth is enabled will reject every submission, because no
+// session can exist yet. The client already signs in anonymously and degrades to
+// an unauthenticated write if Auth is unavailable, so it works under both files.
+// ---------------------------------------------------------------------------
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /scores/{docId} {
+
+      allow read: if true;
+
+      // A run is a single append, by a signed-in session, attributed to itself.
+      allow create: if request.auth != null
+                    && request.resource.data.uid == request.auth.uid
+                    && isValidRun();
+
+      allow update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidRun() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['name', 'score', 'uid', 'createdAt'])
+             && d.name is string
+             && d.name.size() >= 1
+             && d.name.size() <= 14
+             && d.score is int
+             && d.score >= 0
+             && d.score <= 250000
+             && d.uid is string
+             && d.uid.size() <= 128
+             && (!('createdAt' in d) || d.createdAt is timestamp);
+    }
+  }
+}

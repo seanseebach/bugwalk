@@ -1,0 +1,58 @@
+rules_version = '2';
+
+// ---------------------------------------------------------------------------
+// Bug Walk leaderboard rules.
+//
+// Version-controlled on purpose. Until this file existed, the live policy only
+// lived in the Firebase console, so a rule change could be invisible to the
+// repo -- which is exactly what happened during the 2026-09-16 audit: the score
+// ceiling moved from >=10,000,000 to exactly 250,000 with no commit, no diff,
+// and nothing in git to review. The repo is now the source of truth.
+//
+// Threat model: the score is computed in the browser, so no rule here can prove
+// a run was real. What these rules do is bound what a submission may look like
+// and keep the collection append-only. See LEADERBOARD.md for what that buys and
+// what it cannot.
+//
+// Deploy:  firebase deploy --only firestore:rules
+// ---------------------------------------------------------------------------
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /scores/{docId} {
+
+      // The board is public. Reads are a query (orderBy + limit), so this covers
+      // both get and list.
+      allow read: if true;
+
+      // A run is a single append. uid/createdAt are optional so clients can begin
+      // recording them ahead of the migration described in LEADERBOARD.md.
+      allow create: if isValidRun();
+
+      // Deliberately append-only. A submission is evidence, not state: anyone may
+      // add a run, and nobody can rewrite history afterwards -- not even the owner
+      // from a client. Removal is an owner action via the console or an Admin SDK
+      // script, which is the right amount of friction for this collection.
+      allow update, delete: if false;
+    }
+
+    // Nothing else is readable or writable from a client.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidRun() {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['name', 'score', 'uid', 'createdAt'])
+             && d.name is string
+             && d.name.size() >= 1
+             && d.name.size() <= 14
+             && d.score is int
+             && d.score >= 0
+             && d.score <= 250000
+             && (!('uid' in d) || (d.uid is string && d.uid.size() <= 128))
+             && (!('createdAt' in d) || d.createdAt is timestamp);
+    }
+  }
+}
