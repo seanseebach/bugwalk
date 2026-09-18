@@ -220,23 +220,24 @@
     .death-art{ transition:none; }
   }
 
-  /* The Cave: DIVA UP's centered "girl lying smiling in the grass" art --
-     a real sized flex child (see the HTML, between overlay-top and
-     overlay-bottom) rather than a full-bleed background layer, so it's
-     always visible in the middle regardless of how tall the surrounding
-     card content is */
+  /* The Cave: DIVA UP's "girl lying smiling in the grass" art -- full-bleed
+     behind the overlay card, same technique/layer as .death-art above
+     (position:absolute;inset:0), toggled via its own hidden attribute from
+     JS (see goBackToDeath/caveVictoryEnd/gameOver). The art is already a
+     full grass-field composition at the same ~9:14 aspect as the game
+     canvas, so background-size:cover fills the window edge to edge while
+     the girl herself keeps the same size/position within the frame she had
+     in the old small boxed thumbnail. */
   .cave-victory-art{
-    flex:0 0 auto;
-    width:132px;
-    aspect-ratio:60/94;
-    background-image:url("data:image/png;base64,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");
-    background-size:contain;
+    position:absolute; inset:0;
+    background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAAI0CAIAAAC/IySTAAAWiElEQVR4nO3df8hf1X0H8CfjYbOpNCF1SXxcZEbKSg2ajNGWNDRlk06W/iE6OluipVrKhpJs5elcCylsgq1JKDO4bgTjVlfSH8wgA6GVdpCRjrb/GCWVbV3jWNaYZBKSEa2M4PZHGdhzHr3nc59zf3y/39frPw/3e+99fr093HfOPSvuPXjzXKOv/UfzMZ25eMtVVc5z/vEfVzlPiTV3Xd/iUycOnKhy9U27NjUec/70pXTo22erXD2XfzdWffOljq5V8ttS6/vcTv7TWbV6ZeOnLl54pcrVS/4KSn57f6HGzQCzRXAAYYIDCBMcQJjgAMLmSw7Kn1R391Q8V3KtWs1LLfmz6/xJ9f7taWrfcqDO1fPWoKRnmVbDdijd6a4lLPntNeMAwgQHECY4gDDBAYQJDiBsxc69W6ucqM+epZYXzl0c8OpPPf3xZGTLu7/U29XznqW7p/TXrV3V0ZnzNm1sHcrY1g3VYsYBhAkOIExwAGGCAwgTHEBY0VqVEsOuZ5lEOz7418nIyven38NX/rG/72G+HqHPd6a1M7Z3eZUY/3e1hBkHECY4gDDBAYQJDiBMcABhRa1Ku+fA57OR7tYstJPfz7CrV1Y/93IyUmcvjaVM4lvCvvuvZwa8+ix3KN4ABlQgOIAwwQGECQ4gTHAAYdXWqpTIOws9y5tbWP2WZOT0hZ92dK28Z8mvPjumo0PJ25BVq1c2furiheY2z4wDCBMcQJjgAMIEBxAmOICwXluVXN5ZLPEceNA3ic1yz5Kfuc+epc+VKZPYoeR/KSVKGpMSZhxAmOAAwgQHECY4gDDBAYQN3KqUyHdsyfXZvIytZ6Efk9ihdMeMAwgTHECY4ADCBAcQJjiAsKJWpc99zPMzlzxPzpuXk8fTlQ4bN69PRmp1McP2LH2uXunO2FamjO1dXiX67BbNOIAwwQGECQ4gTHAAYYIDCGu5VmX8PUveoSzhjmsbD8nfmFTy7FrPwnIssd/QoO/By5lxAGGCAwgTHECY4ADCBAcQVtSqlOxwfX7Zt1KupMEpWuFSsMfEEl971sWUNC/eG/Z6fa5MKdHnypQlGpMJZMYBhAkOIExwAGGCAwgTHEBYtX1VHjv0jmTk7nt+VOvkLdR6Tt6uLco/lT9L77Nn6XP1ynS0Bu3MztduxgGECQ4gTHAAYYIDCBMcQNh8yTqUkjUd6za8Pxl57FB6zLA9y7DyxmTYnmWW1WrcZqdDyZlxAGGCAwgTHECY4ADCBAcQVrRWZf/2NF/WbdiWjOxbPJyMPJmd/MjI1rOMX589y7EnDiQj227flYx849BDyciH77m/o/upJV+n0860digXb7mqxafMOIAwwQGECQ4gTHAAYYIDCJsvWYeS58vZU8caP3Pr3OXGY/rc9X5sSlav5Ep6lrz7aCfvWXLtrpX3NcOajsbkka/clozkf6eLR1+rci0zDiBMcABhggMIExxAmOAAworWqpQ8id2/O93Dvd158v0+aq01mFa1OpQ+layLKdHud2MSO5Q9n1+bjLRcL7Z7IRlp17OYcQBhggMIExxAmOAAwgQHELZi596tHZ365PEzycjGzesbP3XiwIkqV5+OLiZ//v/Q5z87yJ30r9a7xSaxQ8nfypW/hS/X5/v0zDiAMMEBhAkOIExwAGGCAwjrsFUpUatDGb92Lc8krkPpzv2feXDoW+hE3qGM/z14ZhxAmOAAwgQHECY4gDDBAYRpVUakZB8TXm8Se5Z8H5xJZMYBhAkOIExwAGGCAwgTHEBY0b4q3dm0a1MyMq09y3S8kYw3Nx2NSQkzDiBMcABhggMIExxAmOAAwgZeq9JO3rzk7UytT50/fan5hr59tvmYjLd7daG71St5Y3L6wk87ulauu1ZuzV3Xt/iUGQcQJjiAMMEBhAkOIExwAGEDr1Vpp6QNqfWpJbTqUOjHsN1Hd/KvoqRnadeYlDDjAMIEBxAmOIAwwQGECQ4gbCJblVq62xO8zyf577nj0y0+9f2v7at+J2+kzzucjg6lRP6VVusNC5hxAGGCAwgTHECY4ADCBAcQNkOtyrR2KO3ah1rn6e7M3d0hy2fGAYQJDiBMcABhggMIExxA2Ip7D97ceNDFC6/0cCt1ddeh5EpalWNPHOjhTshtu33X0LfQiT5XpuTMOIAwwQGECQ4gTHAAYYIDCJuStSpj61By+bN9PUsX+uxQau0gP+y7vNox4wDCBAcQJjiAMMEBhAkOIGy+ZB3KqtUrG4/pcz3L+DuUWt76T7/W4lMvb/2X6nfStVpfaa2mo09ju+eSv3czDiBMcABhggMIExxAmOAAwlquVdlz06vZWJpBi0dfa3fymdWuWSg5z9h6lu6+UvphxgGECQ4gTHAAYYIDCBMcQFhRq5KvQ1m34f3JyNlTx+rc0aCGXZmSdx9FrcEfvjc9zw++XOuWupLd89yff6/FaZZoiw61up+RKVmNteau6zu6esm6MzMOIExwAGGCAwgTHECY4ADCVuzcuzUZ2r89TZN1G7YlI/sWDycjT2YFzZHdC8lIu9Urs/O+r3Y7rTy+K+1Q/uB7/5CMDNuzvPXdH0tG/vK9v5mM3HUgPabE/Z95MBl54dzFFueZVt01L2YcQJjgAMIEBxAmOIAwwQGEFa1VKVmHcuvc5WXfTN+G7VBq+YtzJ9KhrLPIe5Y+5R1Kfs93VbrWdWtXJSOz3LMs0UjevK7xU2sWrmw8xowDCBMcQJjgAMIEBxAmOICwJdaqlMjXs+QeePaKZKTdjvbdrVUZtlUp2aP8G4ceanHm99zx6WTk3rWbWpynlrxD+f7X9rU4T74ypZZZbl7ynkWrAnRCcABhggMIExxAmOAAwlq2KrmTx88kI1s+sDEZGbZVGdvKlJJWJTf+nmX8HUot09rFlLw3zIwDCBMcQJjgAMIEBxAmOICwaq3KqtUrG4/ps1WZjg6lnZLmJe9ZainpUMbfmHRnOroYMw4gTHAAYYIDCBMcQJjgAMKK9lUp8cLz5xqPKXmzkA6lH+3Wj7B8+c4vufE3L2YcQJjgAMIEBxAmOIAwwQGEVWtVasnfPpT3LDqUSZe3BiVdw+wo+W7s+fzaZOTue37Uze0swYwDCBMcQJjgAMIEBxAmOICwFfcevLnxoHZv7jpxIN1fI7dpV7q7R8mnhjX+DqVkX4xab2w7f/pS8/1ka5TarUjSvLy5Z9ZfTkZWP/dyR9cy4wDCBAcQJjiAMMEBhAkOIKzaWpV2bYgOhXLt3os1O13MljPZn3P2tbf7HuY9nRkHECY4gDDBAYQJDiBMcABh892tQ5lE09Gh1FqH8rc/2ZWM3HfDoy3up2Q9S3dq7VEyHe1M/lVcvOWqFucx4wDCBAcQJjiAMMEBhAkOIGx0+6p0ZzoakxKP/PATIz/zjrndVc7TJ+3M65lxAGGCAwgTHECY4ADCBAcQNpGtyuz0I7mnfuvhoW+hgpKvYsd3Jq95KVHSzvTZvKz65kvJSMnqFTMOIExwAGGCAwgTHECY4ADCVuzcu7WjU5e8JWyW+5ES09Gh1DKtPUuJYVe45D2LGQcQJjiAMMEBhAkOIExwAGFFrUqtfTrOP/7jopuaVTqUKD3LUMw4gDDBAYQJDiBMcABhggMIq/YGsP3b0wxat2FbMrJjKlqVbxx6KBn58D33tziPDmX58u9hu56l1s90dphxAGGCAwgTHECY4ADCBAcQVtSqvPD8ueaDbnpbMnD21LEWNzSs/Ol6rU95Sj+Uaf2Z5vuz9Ll6xYwDCBMcQJjgAMIEBxAmOICwojeAnT99qfGYNQtXNp9n0LUq7Z6ud+eth68Y+ham0MsffXXoW/g5wzYv1XqWO65NBsw4gDDBAYQJDiBMcABhggMI63C3eh3K61XrUG5cn448d6bOmafULPcsTz398WQkX0G2ePS1Fmc24wDCBAcQJjiAMMEBhAkOIGwiW5WxNSYlilqVvDGpZWaal7F1KO3Ual4+cOMvJSNPZi/9O7J7IRkp6VnMOIAwwQGECQ4gTHAAYYIDCJtftXpl40EXL7zSw628kUnsUIp016GUXGtKe5a8j5jE35/8nmv1LLfOXa5yHjMOIExwAGGCAwgTHECY4ADCVtx78ObGg2q1KvnqlUl84p0reeL91B99vYc7WZap6Fl2fGd3i09N6+/hY4fe0fgpbwADeiI4gDDBAYQJDiBMcABh832uQ5nEZ9fbbt/VeMzC6rf0cCd0p+SnfOyJAz3cyXLkf1+/f/RgMnLyeNqdbdzcZs2UGQcQJjiAMMEBhAkOIExwAGHpJgut/dX2T1Y5z0svvth4zFVXX13lWrmSp+u50xd+mozoWYay5q7rk5F8hVT+8yqR/25017PU+itY4q9yezqQNy8lzDiAMMEBhAkOIExwAGGCAwhruVt9nx1KiZInzO0ak3ae+dO/7+1aHZrAd4LdeU3adJw4cGKQO/mZkualz7+CEiU9ixkHECY4gDDBAYQJDiBMcABhS7QqtRqTdtr9K/0+G5N2JqBnGVmH8sPj/5yM3LD5nY2f2vLEkL+97eTNy7ArtkqYcQBhggMIExxAmOAAwgQHELbi0vf/Zuh7aJDvwd3uDU7DmuVWJe9H+rTzx18c8Ort5G+QG9ueRGYcQJjgAMIEBxAmOIAwwQGEVdtXpZZ2uzwwHsN2KLmvXP+pZGQSe5b7n/1KMvLQTTsHuZOfMeMAwgQHECY4gDDBAYQJDiCs11blw19tfpq9ZuHKHu5kAPlKkBvXD3Ef/29k7/siKu9ZLl54JRnp7m1+ZhxAmOAAwgQHECY4gDDBAYRVa1W+9PDnkpEns5Mf2b2QjNz91f9uPPMkvu+rSJ89y5S+3aud8a9eyX/nr2t1npKVX+2aFzMOIExwAGGCAwgTHECY4ADCWrYql+YebTzm1rnLjceUrEzZtGtTMnLiwInGT02kku4jb16sOpk6+e98ifOnLzUek//F5c1LSc9ixgGECQ4gTHAAYYIDCBMcQNj8Sy++mAxddfXVyUj+rqG5uSuS/96z+9rGiy0efS10cyxhZB3KDZvfWeU8k7jmpU97bnq18Zi7n69zrZKexYwDCBMcQJjgAMIEBxAmOICw+bxDyb3w/LnGYxYvpP8G/uTx9Pn/xs2D7iTCiJW0M901L2N7J9iq1SuTkXUbfiMZOXvqWIszt1vPkjPjAMIEBxAmOIAwwQGECQ4gbH6pdSh16FCoq7vmZWz7qjzyobRD2bd4OBmptW9RiXz1ihkHECY4gDDBAYQJDiBMcABh8xcvvNJ4UMm/Xe/TDO20QlDevIz/3WLffOLGZKRkHUrJvkXXvWtty3tqYsYBhAkOIExwAGGCAwgTHEBYy93qx2ZsPcszt6f/tp+hjK1nWfjdX01GHng23aUoV7JvUcl5ajHjAMIEBxAmOIAwwQGECQ4gbEpalVz+7Pr03/17R9fKO525n3R0KSr4wo6n06EDXV1rid+NTMl6sbu/mu6HcuFcOrLlAxvLb2yZ92PGAYQJDiBMcABhggMIExxA2NS2Krm8Z8nfj/TdP/tBMvK+z7278cwlT6EZs5LuI1/9VPKp7qxeO+R7+cw4gDDBAYQJDiBMcABhggMIW7Fz79ah7yHs/On0X+nnSnaUqNWG/O1PdlU5D0O585rOFqtUMrbfeTMOIExwAGGCAwgTHECY4ADCitaq7N/enC+LR19b9s1AH8bfoYyfGQcQJjiAMMEBhAkOIExwAGFFrcq6DduSkbOnjnVwM6X6/Df5HbpxfTry3JneLt5ux/Z853f6sWZhyPd95cw4gDDBAYQJDiBMcABhggMIm8/XoeQdyr7Fw8nIk1kdc2T3QjIyratXlnjfV96PtNPuPD12MUy6WuvOzDiAMMEBhAkOIExwAGGCAwhbYq1KyTqUW+cud3AzE6JWh1LLoGteJlHei913w6PJyASsdWql1rozMw4gTHAAYYIDCBMcQJjgAMLmS/5d+v7d1zYeM7UrU97+4NC3EDczPUv+HrNZfkfZnpteTUa6W3dmxgGECQ4gTHAAYYIDCBMcQNj8qtUrGw9aPJr+u/2Tx9On9Bs397eCY1rXEcyydvu81DrPI3OfSEZ2rGhu08a210muu3VnZhxAmOAAwgQHECY4gDDBAYQV7Vaf67ND6dNErkwpka9eqdRitFOrQ6llifvZMsR9LM8Dz17ReMyeSuvOzDiAMMEBhAkOIExwAGGCAwibL1n3UbKexfoR3sjYOpQSe5+5LRn5wo6nk5Gx/V2UXGvxaDrSbt2ZGQcQJjiAMMEBhAkOIExwAGEt16pMh3zX8rm3D3EfMJx2687MOIAwwQGECQ4gTHAAYYIDCJvpVoUuTOLKlBJ/8tQHk5F89crsMOMAwgQHECY4gDDBAYQJDiBshlqVJVamAK2YcQBhggMIExxAmOAAwgQHEFbUqvS5N8T505caj1mzcGUPdwJvLu/p7rzmQDIytr1XajHjAMIEBxAmOIAwwQGECQ4gbGrXqliZAt0x4wDCBAcQJjiAMMEBhAkOIGxqW5WWnjuTjtzYZi/v0cm/LjqQd3n3rX50kDtZjpL1NWYcQJjgAMIEBxAmOIAwwQGETUCr8thH3tZ4zLrD9/VwJ7B8e256NRtL//+9ePS1fm6mNTMOIExwAGGCAwgTHECY4ADCqrUq3e0fsW7DtmTk7KljLc7T0iSuXilYmXLD5nf2cCM88sNPpEMfOp4M9Pr7XIkZBxAmOIAwwQGECQ4gTHAAYQOvVdm/PU2udRt+Jz3ooc3pMXPpSK96fJvW7z377WTk6zfd3NvV26nV10zi115i3+LhZOTJ7M/wyO6FZGRsq1fMOIAwwQGECQ4gTHAAYYIDCJvvbo1JS1mHMq3y1qDWp8bfPszy1/7pX96bDv3XHw9xI2+o5O/djAMIExxAmOAAwgQHECY4gLAV9x5sfgpd8pS1VjuT7/c9Hdr1CLUM2zXM8tde4uxHH0lGxrYyJWfGAYQJDiBMcABhggMIExxA2Iqde7cOfQ8/5/zpS8nIU//72UHuZDne962Djcf8yvqNHV39P8+cbDzmu7/9yY6uPstfe4k7rzmQjJw8nr5TbuPmse/dY8YBhAkOIExwAGGCAwgTHEDYwPuqlNix4sFkZM3ClY2f6u7NZvleMEv41i82HlLy/D9vH0o+VaLL9RFXNB4xtq/9gWfTe+7zrXfj71ByZhxAmOAAwgQHECY4gDDBAYSNrlW57l1rG48peeLd3VPxdRu2JSNnTx3r6Fq1eoTcbQ+fTkbG9my/u6891+63JV9XlStpACeRGQcQJjiAMMEBhAkOIExwAGGja1WGla9DyTuUfYuHk5Ens2/jkS8vJCO3fax59Up3Nt79ajbWVYeSX+vkY82rV7pz66//WzJy28PZz2t3+vMa/84mwzLjAMIEBxAmOIAwwQGECQ4gTKvSoGQdyq1zlxuP6bNrWKpDGdKWT6X/f3rmi111Fke+/D/JyOMPp8eU/LxK1FqH0t3b6rpjxgGECQ4gTHAAYYIDCBMcQNjodqsf/xPmkn1VutunYxLfOtXnzzT//jz2kbc1fmrYlSnj/53PmXEAYYIDCBMcQJjgAMIEBxBWtFZlEp/6lmj3deVP4E8eP5OM5HuU1PoeljQmff68xnat3LA/r7Gp9XWZcQBhggMIExxAmOAAwgQHEOYNYBWMbZ933pyf1/KZcQBhggMIExxAmOAAwgQHEPZ/CEX2FCu6c/YAAAAASUVORK5CYII=");
+    background-size:cover;
     background-repeat:no-repeat;
     background-position:center;
     image-rendering:pixelated;
     image-rendering:-moz-crisp-edges;
     image-rendering:crisp-edges;
-    margin:10px auto;
+    pointer-events:none;
   }
   .cave-victory-art[hidden]{ display:none; }
 
@@ -554,6 +555,15 @@
     <div class="screen-wrap" id="screenWrap">
       <canvas id="game" width="360" height="560" aria-label="Bug Walk game screen"></canvas>
       <div class="death-art" id="deathArt" aria-hidden="true"></div>
+      <!-- The Cave: DIVA UP only -- the girl lying smiling in the grass,
+           full-bleed behind the overlay card (same technique/layer as
+           .death-art just above -- position:absolute;inset:0, toggled via
+           its own hidden attribute from JS) instead of a small boxed
+           thumbnail, so it fills the whole game window; the art itself is
+           already a full grass-field composition (same 60x94 aspect as the
+           game canvas), so the girl's own size/position within the frame
+           reads the same as before, just at full scale -->
+      <div class="cave-victory-art" id="caveVictoryArt" hidden aria-hidden="true"></div>
       <!-- girl on the sidewalk, peace sign + iced coffee, grass and yellow
            flowers behind her -- shown only on the very first ready screen,
            same lifecycle as readyLogo/readyScores below -->
@@ -737,7 +747,7 @@
                in overlay-bottom so the list sits right under the Back button
                instead of pinned to the very bottom of the screen with a big
                gap above it -->
-          <div class="pixel-watch inline" id="highscoresPanel" hidden role="status" aria-label="Worldwide top 20 mental health scores">
+          <div class="pixel-watch inline" id="highscoresPanel" hidden role="status" aria-label="Worldwide top 10 mental health scores">
             <div class="watch-lug"></div>
             <div class="watch-case">
               <div class="watch-screen">
@@ -756,12 +766,6 @@
             <div class="watch-lug"></div>
           </div>
           </div>
-          <!-- The Cave: DIVA UP only -- the girl lying smiling in the grass,
-               placed here as its own flex child between overlay-top and
-               overlay-bottom so the split-layout's justify-content:space-between
-               centers it in whatever room is left, guaranteed clear of every
-               other element instead of hoping a background layer peeks through -->
-          <div class="cave-victory-art" id="caveVictoryArt" hidden aria-hidden="true"></div>
           <div class="overlay-bottom" id="overlayBottom">
           <p id="overlayText" hidden></p>
           <div class="pixel-watch inline" id="readyScores" role="status" aria-label="Best steps and mood">
@@ -871,11 +875,16 @@
   var scoresCol = collection(db, "scores");
 
   // exposed to the classic script below -- kept intentionally tiny
-  // (just "give me the top 20" and "add one run") so the game code never
-  // has to know it's talking to Firestore specifically
+  // (just "give me the top raw rows" and "add one run") so the game code
+  // never has to know it's talking to Firestore specifically. This pulls
+  // more rows than the leaderboard actually displays -- a prolific player
+  // can occupy several of the highest-scoring rows with older runs, so the
+  // classic script needs enough raw rows in hand to still find 10 DIFFERENT
+  // players once it collapses everyone down to their own single best score
+  // (see dedupeToTopUsers below).
   window.__bugwalkLeaderboard = {
     fetchTop10: function(){
-      return getDocs(query(scoresCol, orderBy("score", "desc"), limit(20)))
+      return getDocs(query(scoresCol, orderBy("score", "desc"), limit(100)))
         .then(function(snap){
           var out = [];
           snap.forEach(function(doc){
@@ -946,6 +955,7 @@
   var COFFEE_DURATION = 7;         // seconds the walking-speed boost lasts
   var COFFEE_SPEED_MULT = 1.35;    // 35% faster walking (and faster bugs) while it's active
   var COFFEE_SCORE_BONUS = 500;    // instant Mental Health Score bonus for drinking it
+  var CAVE_EXIT_SWATTER_BONUS = 5000; // flat bonus per equipped bug zapper still on her when she exits the cave
   var FLY_KILL_SCORE = 50;         // flies (and their night "moth" reskin) -- same kind, same points
   var ROACH_KILL_SCORE = 30;
   var BEE_KILL_SCORE = 100;
@@ -959,6 +969,11 @@
   var NIGHT_TRANSITION_DURATION = 1.0; // quick pause + banner on each flip
   var GIRL_Y_START = H - 160;    // fixed top-left y of girl sprite -- she only moves left/right
                                   // (kept clear of the bottom edge so a touch-drag finger doesn't cover her)
+  var CAVE_GIRL_Y = GIRL_Y_START - 110; // where she sits once actually inside the cave (see the
+                                  // cutIn->inside transition below) -- higher up than her usual
+                                  // spot, opening up more room underneath her for the widow to
+                                  // trail properly behind and for webs to fall through before
+                                  // reaching her
   var GIRL_MIN_X = SIDE_L + GIRL_W/2 + 2;
   var GIRL_MAX_X = SIDE_R - GIRL_W/2 - 2;
   var MAX_BUGS_ON_SCREEN = 10;    // hard cap on simultaneous bugs -- density stops climbing past this
@@ -980,6 +995,13 @@
   var MEADOW_DURATION = 15;           // free-roam victory lap before the run ends
   var CAVE_WEB_SPEED = 132;           // px/s -- every web strand shares this one fixed speed
   var CAVE_WEB_STRIP_H = 34;          // vertical spacing between generated web strips
+  // stop spawning new web strips once the maze is this close to done (0..1,
+  // see caveGapProgress()) -- gives every already-spawned strip time to
+  // scroll fully off-screen (screen height / CAVE_WEB_SPEED, well under the
+  // remaining approach time at this threshold) so the last stretch up to
+  // the exit is guaranteed clear, per "the spiderweb path should be open
+  // all the way to the exit"
+  var CAVE_WEB_SPAWN_STOP_PROGRESS = 0.9;
   // the big widow no longer pops in and fades -- she's visible the entire
   // "inside"/"exitApproach" stretch, chasing along behind the girl, and
   // never has a hitbox of her own (see drawCaveSpider)
@@ -1205,7 +1227,11 @@
   // the tunnel instead of down at the girl. Red eyes, and a red hourglass
   // marking on the abdomen (rows 2-4, which sit at the TOP of this
   // face-down grid) like a real black widow.
-  var SPIDER_BODY_WIDOW = [
+  // Two leg poses (same idea as GIRL_LEGS_A/B and the roach's tail-leg
+  // rows) swapped on the shared animFrame timer so the legs actually
+  // scuttle instead of sitting frozen -- frame A splays them out wide,
+  // frame B pulls them in a notch tighter, only the "l" pixels differ.
+  var SPIDER_BODY_WIDOW_A = [
     "......aaa......",
     ".....aAAAa.....",
     "....aAwwwAa....",
@@ -1220,6 +1246,22 @@
     "..l.......l....",
     ".l.........l...",
     "l...........l.."
+  ];
+  var SPIDER_BODY_WIDOW_B = [
+    "......aaa......",
+    ".....aAAAa.....",
+    "....aAwwwAa....",
+    "...aAAawaAAa...",
+    "...lAawwwaAl...",
+    "..lAAaaaAAl....",
+    ".l.AAAaAAA.l...",
+    ".l.bbbbbbb.l...",
+    "....eek.kee....",
+    "..l.bbbbb.l....",
+    ".l....AAA...l..",
+    "...l.....l.....",
+    "..l.......l....",
+    ".l..........l.."
   ];
   var SPIDER_COLORS_WIDOW = { a:"#0c0a10", A:"#171219", b:"#0a0810", l:"#050408", e:"#ff2222", k:"#7a0d0d", w:"#c81c1c" };
   var SPIDER_W = 15 * SCALE, SPIDER_H = 14 * SCALE; // same grid as the fly; drawn ~3x that scale (see drawCaveSpider)
@@ -1654,13 +1696,34 @@
   var worldTop10 = null;
   var leaderboardStatus = "idle"; // idle | loading | ready | error | unavailable
   var pendingScoreForEntry = null;
+  var WORLD_TOP_N = 10; // how many (unique) players the list actually shows
 
-  // Firestore does the "top 10" sorting itself (orderBy + limit in the
+  // collapses a batch of raw score rows down to one row per player -- their
+  // single highest score -- then sorts and trims to the top N. Names are
+  // matched trimmed + case-insensitively (" Sean" and "SEAN" are the same
+  // player for this purpose), but the row that wins keeps its own original
+  // name casing rather than some normalized form, so the board still shows
+  // whatever that player actually typed on their best run. Blank names are
+  // dropped rather than lumped together into one anonymous "player".
+  function dedupeToTopUsers(rows, maxUsers){
+    var bestByName = {};
+    rows.forEach(function(r){
+      var key = (r.name || "").trim().toLowerCase();
+      if (!key) return;
+      if (!bestByName[key] || r.score > bestByName[key].score) bestByName[key] = r;
+    });
+    var deduped = Object.keys(bestByName).map(function(key){ return bestByName[key]; });
+    deduped.sort(function(a, b){ return b.score - a.score; });
+    return deduped.slice(0, maxUsers);
+  }
+
+  // Firestore does the score-descending sort itself (orderBy + limit in the
   // query built in window.__bugwalkLeaderboard.fetchTop10, see the module
-  // script above) rather than fetching every submission ever made and
-  // sorting client-side -- so unlike the old CrudCrud version, there's
-  // nothing here that needs periodic pruning to stay fast; every historical
-  // run can just stay in the collection.
+  // script above), pulling far more raw rows than WORLD_TOP_N so that
+  // dedupeToTopUsers still has enough to work with once a player who shows
+  // up more than once collapses down to a single row -- so unlike the old
+  // CrudCrud version, there's nothing here that needs periodic pruning to
+  // stay fast; every historical run can just stay in the collection.
   function fetchLeaderboard(cb){
     if (!window.__bugwalkLeaderboard){
       leaderboardStatus = "unavailable";
@@ -1669,8 +1732,8 @@
     }
     leaderboardStatus = "loading";
     window.__bugwalkLeaderboard.fetchTop10()
-      .then(function(top10){
-        worldTop10 = top10;
+      .then(function(rawRows){
+        worldTop10 = dedupeToTopUsers(rawRows, WORLD_TOP_N);
         leaderboardStatus = "ready";
         if (cb) cb();
       })
@@ -1684,7 +1747,7 @@
   function qualifiesForTop10(scoreVal){
     if (scoreVal <= 0) return false;
     if (!worldTop10) return false; // not loaded yet -- never guess
-    if (worldTop10.length < 20) return true;
+    if (worldTop10.length < WORLD_TOP_N) return true;
     return scoreVal > worldTop10[worldTop10.length - 1].score;
   }
 
@@ -1697,9 +1760,11 @@
     if (!window.__bugwalkLeaderboard){ if (cb) cb(false); return; }
     window.__bugwalkLeaderboard.submitScore(name, Math.floor(scoreVal))
       .then(function(created){
+        // re-run the same dedupe over the old list plus this one new row --
+        // if this player already had a spot, the higher of the two wins
+        // rather than adding a second row for the same person
         var list = (worldTop10 || []).concat([created]);
-        list.sort(function(a, b){ return b.score - a.score; });
-        worldTop10 = list.slice(0, 20);
+        worldTop10 = dedupeToTopUsers(list, WORLD_TOP_N);
         leaderboardStatus = "ready";
         if (cb) cb(true);
       })
@@ -1827,6 +1892,11 @@
   // remembers which one so the "Back" button can return to the right place
   // instead of always assuming a run just ended
   var highscoresEnteredFrom = STATE_OVER;
+  // set by caveVictoryEnd()/gameOver() so goBackToDeath() (reached via the
+  // High Scores "Back" button) can restore the right title/art instead of
+  // always falling back to the plain-death look
+  var lastEndWasVictory = false;
+  var DIVA_VICTORY_TITLE = "DIVA DOWN (in a good way)";
 
   function goToHighscores(){
     highscoresEnteredFrom = state === STATE_READY ? STATE_READY : STATE_OVER;
@@ -1838,6 +1908,17 @@
     // run that just ended (on the very first start screen, nothing has run
     // yet, so this is a harmless no-op there)
     deathArt.style.opacity = "0";
+    // High Scores should always be just the list + Back button -- never the
+    // DIVA DOWN/DIVA UP background art (this was the bug behind "the win
+    // high score page has the win picture on it": caveVictoryArt was never
+    // told to hide here) and, reached straight from the very first ready
+    // screen, never the sidewalk-girl ready-art either
+    if (caveVictoryArt) caveVictoryArt.hidden = true;
+    readyArt.hidden = true;
+    // the wordmark/flowers logo block (visible by default until the very
+    // first startGame()) is another "other element" that doesn't belong on
+    // the High Scores page
+    readyLogo.hidden = true;
     overlayTitleWrap.hidden = false;
     setOverlayTitle("HIGH SCORES", true);
     overlayTitleWrap.classList.remove("drop-in");
@@ -1872,9 +1953,20 @@
 
   function goBackToDeath(){
     state = STATE_OVER;
-    deathArt.style.opacity = "";
-    overlayTitleWrap.hidden = false;
-    setOverlayTitle("DIVA DOWN", true);
+    // mirror whichever ending this run actually had -- a victory shouldn't
+    // flip back to the plain crying-girl "DIVA DOWN" look just because the
+    // High Scores list was opened and closed again
+    if (lastEndWasVictory){
+      deathArt.style.opacity = "0";
+      if (caveVictoryArt) caveVictoryArt.hidden = false;
+      overlayTitleWrap.hidden = false;
+      setOverlayTitle(DIVA_VICTORY_TITLE, true);
+    } else {
+      deathArt.style.opacity = "";
+      if (caveVictoryArt) caveVictoryArt.hidden = true;
+      overlayTitleWrap.hidden = false;
+      setOverlayTitle("DIVA DOWN", true);
+    }
     overlayTitleWrap.classList.remove("drop-in");
     void overlayTitleWrap.offsetWidth;
     overlayTitleWrap.classList.add("drop-in");
@@ -1894,6 +1986,11 @@
   function goBackToStart(){
     state = STATE_READY;
     deathArt.style.opacity = "";
+    // undo the readyArt.hidden=true / readyLogo.hidden=true that
+    // goToHighscores() applied -- back on the real ready screen, the
+    // sidewalk-girl art and wordmark belong again
+    readyArt.hidden = false;
+    readyLogo.hidden = false;
     // no "READY?" text -- the start button sits in that spot instead, same
     // as the true first paint (see boot())
     overlayTitleWrap.hidden = true;
@@ -2567,8 +2664,14 @@
   // large, close one as progress (0..1) climbs through found+approach
   function drawCaveMountainEntrance(progress){
     var laneW = SIDE_R - SIDE_L, midX = (SIDE_L+SIDE_R)/2;
-    var baseY = H * (0.20 + 0.30*progress);
-    var mouthH = H * (0.12 + 0.34*progress);
+    // fixed at its final size for the whole approach -- this used to scale
+    // up with progress (baseY 0.20->0.50, mouthH 0.12->0.46 of H), which
+    // read as the archway visibly growing taller as she got close. It now
+    // renders at that same final size from the moment it first appears, so
+    // it stays put; `progress` is kept as a parameter (unused here now) so
+    // the call site doesn't need to change.
+    var baseY = H * 0.50;
+    var mouthH = H * 0.46;
     var archW = laneW * 0.62;
     var rise = mouthH*2.1;
     var bands = 6;
@@ -2650,19 +2753,44 @@
     }
   }
 
+  // widow-spider chase state: it eases toward her x position (see
+  // updateCaveSpider) instead of snapping to it, so it visibly lags a beat
+  // behind a quick turn -- and it leans into that lag (see the tilt math in
+  // drawCaveSpider below), reading as if it's actively straining to catch
+  // up rather than just being glued underneath her. Purely cosmetic --
+  // draw-only, no hitbox, can never actually end the run. The real threats
+  // in the cave are the webs and the little diving spiderlings.
+  var caveSpiderTrackX = 0;
+  var SPIDER_BASE_GAP = GIRL_H*1.7; // fixed resting distance below her
+
+  // eases caveSpiderTrackX toward her x position every frame. Called from
+  // updateCaveWebs (the same two cave stages it's ever drawn during) so
+  // its position stays current regardless of whether anything else in
+  // that function has webs to process.
+  function updateCaveSpider(dt){
+    var followSpeed = 260; // px/s -- fast enough to keep up, slow enough to visibly lag on a quick turn
+    var dx = girl.x - caveSpiderTrackX;
+    var maxStep = followSpeed*dt;
+    caveSpiderTrackX += Math.max(-maxStep, Math.min(maxStep, dx));
+  }
+
   // the big widow chases her the entire time she's inside/exiting the cave
-  // -- always on screen, tracking her x position, with a quick skitter/bob
-  // so she reads as running rather than statically parked there. Draw-only:
-  // she has no hitbox anywhere in the collision code, so she can never
-  // actually catch up and end the run, only keep the pressure on
+  // -- always on screen, trailing her x position with a slight lag and
+  // tilting into that lag (see updateCaveSpider above), with its legs
+  // scuttling between two frames on the shared animFrame timer so it
+  // reads as running rather than statically parked there.
   function drawCaveSpider(){
     if (caveStage !== "inside" && caveStage !== "exitApproach") return;
     var scuttle = Math.sin(t*9) * 4;      // fast side-to-side leg-scuttle
     var bob = Math.abs(Math.sin(t*9)) * 3; // quick up/down bounce, same rhythm
     var spx = SCALE*3;
-    var cx = girl.x + scuttle, topY = girl.y + GIRL_H*1.25 + bob;
+    var cx = caveSpiderTrackX + scuttle, topY = girl.y + SPIDER_BASE_GAP + bob;
+    // leans toward wherever she currently is relative to its own (laggy)
+    // position -- the further behind it's trailing, the harder the lean
+    var tilt = Math.max(-0.5, Math.min(0.5, (caveSpiderTrackX - girl.x) * 0.012));
+    var frame = animFrame === 0 ? SPIDER_BODY_WIDOW_A : SPIDER_BODY_WIDOW_B;
     ctx.save();
-    drawSpriteRotated(ctx, SPIDER_BODY_WIDOW, SPIDER_COLORS_WIDOW, cx, topY, spx, SPIDER_H*3, Math.PI);
+    drawSpriteRotated(ctx, frame, SPIDER_COLORS_WIDOW, cx, topY, spx, SPIDER_H*3, Math.PI + tilt);
     ctx.restore();
   }
 
@@ -2707,7 +2835,12 @@
   function caveGapWidth(){
     var laneW = SIDE_R - SIDE_L;
     var wide = laneW * 0.82;
-    var tight = GIRL_W * 1.5;
+    // widened from 1.5x -- at 1.5x GIRL_W, after also reserving room for
+    // her own hitbox (see spawnWebStrip's clearance margin below), the
+    // truly free travel corridor was barely wider than she is, which read
+    // as "I can't fit through". 2.4x leaves real maneuvering room even at
+    // the tightest point.
+    var tight = GIRL_W * 2.4;
     return wide + (tight - wide) * caveGapProgress();
   }
   // a winding path center, two summed sine waves for an organic wander --
@@ -2720,7 +2853,13 @@
   function spawnWebStrip(){
     var gapW = caveGapWidth();
     var cx = caveGapCenterX(caveWebStripIndex);
-    var leftClear = cx - gapW/2, rightClear = cx + gapW/2;
+    // widen the excluded band by her own hitbox half-width (same
+    // GIRL_W*0.22 used for the real collision check in updateCaveWebs) so
+    // the actual travelable corridor -- from where her hitbox would first
+    // touch a web on one side to where it'd touch one on the other -- comes
+    // out to the full gapW, instead of gapW minus her own width
+    var girlHalfW = GIRL_W*0.22;
+    var leftClear = cx - gapW/2 - girlHalfW, rightClear = cx + gapW/2 + girlHalfW;
     var count = 3 + Math.floor(Math.random()*3);
     for (var i=0;i<count;i++){
       var size = 17 + Math.random()*10;
@@ -2827,10 +2966,22 @@
     caveStage = "found";
     caveStageTimer = 0;
     caveApproachElapsed = 0;
+    // start the widow right under her -- no lag on the very first frame
+    caveSpiderTrackX = girl.x;
     showCaveBanner("You found the cave");
   }
 
   function triggerCaveExit(){
+    // cash in every bug zapper she's still carrying -- 5k flat each, not
+    // run through pointsMultiplier() like kill/coffee points (this is a
+    // one-time "gear turned in" bonus, not a per-hit score) -- then clear
+    // them, since she's leaving the cave and they don't carry forward
+    if (girl.swatterCount > 0){
+      var swatterBonus = girl.swatterCount * CAVE_EXIT_SWATTER_BONUS;
+      killScore += swatterBonus;
+      spawnScorePopup(girl.x, girl.y - GIRL_H*0.3, swatterBonus);
+      girl.swatterCount = 0;
+    }
     caveStage = "exitApproach";
     caveStageTimer = 0;
     caveExitElapsed = 0;
@@ -2872,6 +3023,10 @@
         caveWebStripIndex = 0;
         caveSpiderlingTimer = SPIDERLING_MIN_INTERVAL + Math.random()*(SPIDERLING_MAX_INTERVAL-SPIDERLING_MIN_INTERVAL);
         powerUpTimer = 1.5 + Math.random()*1.5; // coffee shows up fast once she's inside
+        // she sits higher for the rest of the cave arc (inside, exiting,
+        // and the meadow after) -- more room below her for the webs to
+        // fall through and for the widow to trail properly behind
+        girl.y = CAVE_GIRL_Y;
       }
       return true; // frozen black beat
     }
@@ -2918,11 +3073,18 @@
   // entirely (it's a separate array), every strand shares one fixed speed,
   // and touching one ends the run exactly like touching a bug does
   function updateCaveWebs(dt){
+    // keeps the widow's follow/lunge animation state current -- purely
+    // cosmetic, see updateCaveSpider -- during "exitApproach" too, same as
+    // the webs still finishing their scroll below
+    updateCaveSpider(dt);
     if (caveStage === "inside"){
       caveWebStripTimer -= dt;
       if (caveWebStripTimer <= 0){
         caveWebStripTimer = CAVE_WEB_STRIP_H / CAVE_WEB_SPEED;
-        spawnWebStrip();
+        // stop generating new strips once the maze is almost done -- lets
+        // the last ones scroll fully clear before the exit, so she's never
+        // met with a web right as she's stepping out
+        if (caveGapProgress() < CAVE_WEB_SPAWN_STOP_PROGRESS) spawnWebStrip();
         caveWebStripIndex++;
       }
       // little spiders dive at her throughout the maze -- same straight-line
@@ -2952,6 +3114,7 @@
   // with the title swapped to a win and the crying-girl death art skipped
   function caveVictoryEnd(){
     state = STATE_OVER;
+    lastEndWasVictory = true;
     shake = 0;
     stopBubbleAmbient();
     stopMusic();
@@ -2967,7 +3130,7 @@
     if (steps > highSteps) saveHighSteps(steps);
 
     overlayTitleWrap.hidden = false;
-    setOverlayTitle("DIVA UP", true);
+    setOverlayTitle(DIVA_VICTORY_TITLE, true);
     overlayTitleWrap.classList.remove("drop-in");
     void overlayTitleWrap.offsetWidth;
     overlayTitleWrap.classList.add("drop-in");
@@ -3072,6 +3235,8 @@
     caveBannerTimer = 0; caveSpiderlingTimer = 0; meadowElapsed = 0;
     webs = []; caveWebStripTimer = 0; caveWebStripIndex = 0;
     caveApproachElapsed = 0; caveExitElapsed = 0;
+    caveSpiderTrackX = girl.x;
+    lastEndWasVictory = false;
     musicMode = "trap";
     if (caveBanner) caveBanner.classList.remove("show");
     // a cave-victory ending (see caveVictoryEnd) leaves the crying-girl
@@ -3553,6 +3718,7 @@
 
   function gameOver(){
     state = STATE_OVER;
+    lastEndWasVictory = false;
     shake = 0.35;
     stopBubbleAmbient();
     stopMusic();
@@ -3698,7 +3864,8 @@
         var bf = animFrame === 0 ? BEE_FRAME_A : BEE_FRAME_B;
         drawSpriteRotated(ctx, bf, BEE_COLORS, b.x, b.y, SCALE, b.h, bugHeadingAngle(b));
       } else if (b.kind === "spider"){
-        drawSpriteRotated(ctx, SPIDER_BODY_WIDOW, SPIDER_COLORS_WIDOW, b.x, b.y, SPIDERLING_PX, b.h, bugHeadingAngle(b));
+        var swf = animFrame === 0 ? SPIDER_BODY_WIDOW_A : SPIDER_BODY_WIDOW_B;
+        drawSpriteRotated(ctx, swf, SPIDER_COLORS_WIDOW, b.x, b.y, SPIDERLING_PX, b.h, bugHeadingAngle(b));
       } else if (b.nightVariant){
         var mf = animFrame === 0 ? MOTH_FRAME_A : MOTH_FRAME_B;
         drawSpriteRotated(ctx, mf, MOTH_COLORS, b.x, b.y, SCALE, b.h, bugHeadingAngle(b));
